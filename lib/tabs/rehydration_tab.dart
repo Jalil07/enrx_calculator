@@ -71,13 +71,6 @@ class _RehydrationTabState extends State<RehydrationTab> {
         final item = data[index];
         return GestureDetector(
           onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const CalculatorPage(
-                ),
-              ),
-            );
           },
           child: IntrinsicHeight(
             child: Container(
