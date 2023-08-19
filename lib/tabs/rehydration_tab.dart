@@ -1,0 +1,240 @@
+import 'dart:convert';
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../pages/calculator_page.dart';
+
+class RehydrationTab extends StatefulWidget {
+  @override
+  _RehydrationTabState createState() => _RehydrationTabState();
+}
+
+class _RehydrationTabState extends State<RehydrationTab> {
+  Future<List<Map<String, dynamic>>>? _dataFuture;
+  List<Map<String, dynamic>> _contentData = [];
+  final int tabNo = 19;
+
+  @override
+  void initState() {
+    super.initState();
+    _dataFuture = _fetchData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: _dataFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: SizedBox(
+              width: double.infinity,
+              height: double.infinity,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text('Sabr while we are retrieving data'),
+                ],
+              ),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return const Center(
+            child: Text('Failed to fetch data for this tab.'),
+          );
+        } else if (snapshot.hasData) {
+          final List<Map<String, dynamic>> data = snapshot.data!;
+          return Scaffold(
+            body: _body(data),
+            floatingActionButton: _fab(),
+          );
+        } else {
+          return const Center(
+            child: Text('No data available.'),
+          );
+        }
+      },
+    );
+  }
+
+  ListView _body(List<Map<String, dynamic>> data) {
+    return ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        final item = data[index];
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const CalculatorPage(
+                ),
+              ),
+            );
+          },
+          child: IntrinsicHeight(
+            child: Container(
+              margin: EdgeInsets.only(
+                  top: index == 0 ? 6 : 3,
+                  bottom: index == _contentData.length - 1 ? 75 : 3,
+                  left: 3,
+                  right: 3),
+              color: Colors.white,
+              child: Row(
+                children: [
+                  Container(
+                    width: 5,
+                    height: double.infinity,
+                    color: Colors.deepOrangeAccent,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 10),
+                      child: Text(
+                        item['Name'],
+                        style: const TextStyle(
+                            fontFamily: 'Poppins', fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  FloatingActionButton _fab() {
+    return FloatingActionButton(
+      backgroundColor: Colors.deepOrangeAccent,
+      onPressed: () async {
+        final connectivityResult = await Connectivity().checkConnectivity();
+        if (connectivityResult == ConnectivityResult.none) {
+          // No internet connection, show a Snackbar
+          await _showNoInternetSnackbar();
+          return; // Don't proceed with the action
+        }
+
+        showRefreshDialog();
+      },
+      child: const Icon(Icons.refresh),
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> _fetchData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final key = 'tab_$tabNo'; // Use the correct key for tab number 15
+      final jsonData = prefs.getString(key);
+
+      if (jsonData != null) {
+        final List<dynamic> listmap = json.decode(jsonData);
+        _contentData = List<Map<String, dynamic>>.from(listmap);
+        return _contentData;
+      } else {
+        final url =
+            'https://script.google.com/macros/s/AKfycbznuDS4jGD5ViCVC2igwI7IWPDr87KBbkmp1QK-Af_ZowTOEn_Gd3bNDOOQ5KCVJJOrTw/exec?action=getMany&tabno=$tabNo&from=2&to=1000';
+
+        final response = await http.get(Uri.parse(url));
+
+        if (response.statusCode == 200) {
+          final List<dynamic> listmap = json.decode(response.body);
+          _contentData = List<Map<String, dynamic>>.from(listmap);
+
+          // Save data to shared preferences
+          final jsonData = json.encode(_contentData);
+          await prefs.setString(key, jsonData);
+
+          return _contentData;
+        } else {
+          // Handle error
+          return [];
+        }
+      }
+    } catch (e) {
+      print("Error fetching data: $e");
+      return [];
+    }
+  }
+
+  Future<void> _showNoInternetSnackbar() async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('No internet connection!'),
+      ),
+    );
+  }
+
+  Future<void> _refreshData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final key = 'tab_$tabNo';
+    final sharedPrefs = await prefs;
+    // Clear the shared preferences
+    sharedPrefs.remove(key);
+    setState(() {
+      _dataFuture = _fetchData();
+    });
+  }
+
+  Future<dynamic> showRefreshDialog() {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext dialogContext) {
+          return AlertDialog(
+            title: const Text(
+              'Confirmation',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600),
+            ),
+            content: const Text(
+              'Refreshing data will take time. Continue?',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w500),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(dialogContext).pop();
+                },
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                      color: Colors.black54,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+              TextButton(
+                onPressed: () async {
+                  Navigator.of(dialogContext).pop();
+                  await _refreshData();
+                },
+                child: const Text(
+                  'Continue',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+  }
+}
