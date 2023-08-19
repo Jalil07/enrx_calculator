@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../pages/calculator_page.dart';
+import '../pages/photo_view.dart';
 
 class TFFormulaTab extends StatefulWidget {
   @override
@@ -40,7 +41,7 @@ class _TFFormulaTabState extends State<TFFormulaTab> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text('Sabr while we are retrieving data'),
+                  Text('Please wait retrieving data'),
                 ],
               ),
             ),
@@ -111,14 +112,31 @@ class _TFFormulaTabState extends State<TFFormulaTab> {
           child: IntrinsicHeight(
             child: Container(
               margin: EdgeInsets.only(
-                  top: index == 0 ? 6 : 3,
-                  bottom: index == _contentData.length - 1 ? 75 : 3,
-                  left: 3,
-                  right: 3),
+                top: index == 0 ? 6 : 3,
+                bottom: index == _contentData.length - 1 ? 75 : 3,
+                left: 3,
+                right: 3,
+              ),
               color: Colors.white,
               child: Row(
                 children: [
-                  Image.network(item['Product Image'], height: 45, width: 45,),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ImagePreviewPage(
+                            imageUrl: item['Product Image'],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Image.network(
+                      item['Product Image'],
+                      height: 55,
+                      width: 55,
+                    ),
+                  ),
                   const SizedBox(width: 15),
                   Expanded(
                     child: Padding(
@@ -130,17 +148,22 @@ class _TFFormulaTabState extends State<TFFormulaTab> {
                           Text(
                             item['Product'],
                             style: const TextStyle(
-                                fontFamily: 'Poppins', fontWeight: FontWeight.w600),
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600),
                           ),
                           Text(
                             item['Formula'],
                             style: const TextStyle(
-                                fontFamily: 'Poppins', fontWeight: FontWeight.w500, fontSize: 13),
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13),
                           ),
                           Text(
                             item['Info'],
                             style: const TextStyle(
-                                fontFamily: 'Poppins', fontWeight: FontWeight.w500, fontSize: 13),
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13),
                           ),
                         ],
                       ),

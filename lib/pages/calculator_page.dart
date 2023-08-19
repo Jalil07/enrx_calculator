@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 class CalculatorPage extends StatelessWidget {
   final String contentJson;
 
-  CalculatorPage({
+  const CalculatorPage(
+      {super.key,
     required this.contentJson,
   });
 
@@ -33,16 +34,24 @@ class CalculatorPage extends StatelessWidget {
       body: ListView.builder(
         itemCount: content.length,
         itemBuilder: (context, index) {
-          // Build your UI using the content data
-          // For example:
           Map<String, String> item = content[index];
-          return ListTile(
-            title: Text('Product: ${item["Product"]}'),
-            subtitle: Text('Scoops: ${item["scoops"]}'),
-            // Add more widgets as needed to display other data
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    Text(item["nutrition"]!),
+                    const Spacer(),
+                    Text(item["scoops"]!),
+                  ],
+                ),
+              ),
+              if (index < content.length - 1) const Divider(), // Add a Divider except for the last item
+            ],
           );
         },
-      ),
+      )
     );
   }
 }
