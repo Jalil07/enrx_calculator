@@ -17,50 +17,79 @@ class HomePage extends StatelessWidget {
       backgroundColor: const Color(0xFFF1CD88),
       body: Stack(
           children: [
-            Stack(
-              children: [
-                ClipPath(
-                  clipper: WaveClipper(),
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 25),
-                    color: const Color(0xFF422546),
-                    height: 140,
-                    width: double.infinity,
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'ENRX',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          'Calculator',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
+            // Stack(
+            //   children: [
+            //     ClipPath(
+            //       clipper: WaveClipper(),
+            //       child: Container(
+            //         padding: const EdgeInsets.only(left: 25),
+            //         color: const Color(0xFF422546),
+            //         height: 140,
+            //         width: double.infinity,
+            //         child: const Column(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           children: [
+            //             Text(
+            //               'ENRX',
+            //               style: TextStyle(
+            //                 color: Colors.white,
+            //                 fontSize: 19,
+            //                 fontWeight: FontWeight.bold,
+            //               ),
+            //             ),
+            //             Text(
+            //               'Calculator',
+            //               style: TextStyle(
+            //                 color: Colors.white,
+            //                 fontSize: 18,
+            //                 fontWeight: FontWeight.normal,
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //     Opacity(
+            //       opacity: 0.5,
+            //       child: ClipPath(
+            //         clipper: WaveClipper(),
+            //         child: Container(
+            //           color: const Color(0xFF422546),
+            //           height: 160,
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            Image.asset('assets/images/header.png'),
+            const Padding(
+              padding: EdgeInsets.only(top: 65, left: 25),
+              child: Opacity(
+                opacity: 0.5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'ENRX',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                ),
-                Opacity(
-                  opacity: 0.5,
-                  child: ClipPath(
-                    clipper: WaveClipper(),
-                    child: Container(
-                      color: const Color(0xFF422546),
-                      height: 160,
+                    Text(
+                      'Calculator',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
             Center(
               child: Padding(
