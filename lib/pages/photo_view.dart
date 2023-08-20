@@ -10,7 +10,8 @@ class ImagePreviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Image Preview'),
+        backgroundColor: Colors.black,
+        title: const Text('Image Preview'),
       ),
       body: Center(
         child: PhotoView(
