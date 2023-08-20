@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../pages/calculator_page.dart';
+import '../pages/photo_view.dart';
 
 class RehydrationTab extends StatefulWidget {
   @override
@@ -15,7 +16,7 @@ class RehydrationTab extends StatefulWidget {
 class _RehydrationTabState extends State<RehydrationTab> {
   Future<List<Map<String, dynamic>>>? _dataFuture;
   List<Map<String, dynamic>> _contentData = [];
-  final int tabNo = 19;
+  final int tabNo = 4;
 
   @override
   void initState() {
@@ -40,7 +41,7 @@ class _RehydrationTabState extends State<RehydrationTab> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text('Sabr while we are retrieving data'),
+                  Text('Please wait retrieving data'),
                 ],
               ),
             ),
@@ -71,30 +72,91 @@ class _RehydrationTabState extends State<RehydrationTab> {
         final item = data[index];
         return GestureDetector(
           onTap: () {
+            List<Map<String, String>> content = [];
+            List<String> listString = [
+              "Calories", "CHO (g)", "Protein", "Na (mg)",
+              "K (mg)", "Cl (mEq/L)", "Mg (mg)", "Ca (mg)",
+            ];
+            int toMapPosition = 0;
+            for (int _repeat21 = 0; _repeat21 < listString.length; _repeat21++) {
+              Map<String, String> mapfilter = {};
+              mapfilter["scoops"] = item[listString[toMapPosition]].toString();
+              mapfilter["nutrition"] = listString[toMapPosition];
+              mapfilter["Product"] = item["Product"].toString();
+              mapfilter["position"] = index.toString();
+              content.add(mapfilter);
+              toMapPosition++;
+            }
+
+            // Convert content list to JSON
+            String contentJson = json.encode(content);
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CalculatorPage(
+                  contentJson: contentJson,
+                ),
+              ),
+            );
           },
           child: IntrinsicHeight(
             child: Container(
               margin: EdgeInsets.only(
-                  top: index == 0 ? 6 : 3,
-                  bottom: index == _contentData.length - 1 ? 75 : 3,
-                  left: 3,
-                  right: 3),
+                top: index == 0 ? 6 : 3,
+                bottom: index == _contentData.length - 1 ? 75 : 3,
+                left: 3,
+                right: 3,
+              ),
               color: Colors.white,
               child: Row(
                 children: [
-                  Container(
-                    width: 5,
-                    height: double.infinity,
-                    color: Colors.deepOrangeAccent,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ImagePreviewPage(
+                            imageUrl: item['Product Image'],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Image.network(
+                      item['Product Image'],
+                      height: 55,
+                      width: 55,
+                    ),
                   ),
+                  const SizedBox(width: 15),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           vertical: 20, horizontal: 10),
-                      child: Text(
-                        item['Name'],
-                        style: const TextStyle(
-                            fontFamily: 'Poppins', fontWeight: FontWeight.w600),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item['Product'],
+                            style: const TextStyle(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600),
+                          ),
+                          Text(
+                            item['Company'],
+                            style: const TextStyle(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13),
+                          ),
+                          Text(
+                            item['Info'],
+                            style: const TextStyle(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 13),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -127,7 +189,7 @@ class _RehydrationTabState extends State<RehydrationTab> {
   Future<List<Map<String, dynamic>>> _fetchData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final key = 'tab_$tabNo'; // Use the correct key for tab number 15
+      final key = 'tab_$tabNo'; // Use the correct key for tab number 0 for ENRX tab
       final jsonData = prefs.getString(key);
 
       if (jsonData != null) {
@@ -136,7 +198,7 @@ class _RehydrationTabState extends State<RehydrationTab> {
         return _contentData;
       } else {
         final url =
-            'https://script.google.com/macros/s/AKfycbznuDS4jGD5ViCVC2igwI7IWPDr87KBbkmp1QK-Af_ZowTOEn_Gd3bNDOOQ5KCVJJOrTw/exec?action=getMany&tabno=$tabNo&from=2&to=1000';
+            'https://script.google.com/macros/s/AKfycbxPvnwJiFbH0A9kya106YQ-JqRgF_gGKspxPdN-cfMvJ0fJVMiwcVTrdbvGmt9PCFIuhQ/exec?action=getMany&tabno=$tabNo&from=2&to=1000';
 
         final response = await http.get(Uri.parse(url));
 
@@ -181,53 +243,53 @@ class _RehydrationTabState extends State<RehydrationTab> {
 
   Future<dynamic> showRefreshDialog() {
     return showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext dialogContext) {
-          return AlertDialog(
-            title: const Text(
-              'Confirmation',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600),
-            ),
-            content: const Text(
-              'Refreshing data will take time. Continue?',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w500),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(dialogContext).pop();
-                },
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600),
-                ),
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text(
+            'Confirmation',
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w600),
+          ),
+          content: const Text(
+            'Refreshing data will take time. Continue?',
+            style: TextStyle(
+                color: Colors.black,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w500),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                    color: Colors.black54,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w600),
               ),
-              TextButton(
-                onPressed: () async {
-                  Navigator.of(dialogContext).pop();
-                  await _refreshData();
-                },
-                child: const Text(
-                  'Continue',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600),
-                ),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.of(dialogContext).pop();
+                await _refreshData();
+              },
+              child: const Text(
+                'Continue',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w600),
               ),
-            ],
-          );
-        },
-      );
+            ),
+          ],
+        );
+      },
+    );
   }
 }
