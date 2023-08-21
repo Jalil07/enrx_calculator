@@ -123,9 +123,16 @@ class _RehydrationTabState extends State<RehydrationTab> {
                       );
                     },
                     child: Image.network(
-                      item['Product Image'],
+                      item['Product Image'] ?? '',
                       height: 55,
                       width: 55,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.image_not_supported_outlined,
+                          color: Colors.white,
+                          size: 55,
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: 15),
@@ -171,7 +178,7 @@ class _RehydrationTabState extends State<RehydrationTab> {
 
   FloatingActionButton _fab() {
     return FloatingActionButton(
-      backgroundColor: Colors.deepOrangeAccent,
+      backgroundColor: const Color(0xFF422546),
       onPressed: () async {
         final connectivityResult = await Connectivity().checkConnectivity();
         if (connectivityResult == ConnectivityResult.none) {

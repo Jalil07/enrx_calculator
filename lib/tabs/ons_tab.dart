@@ -1,19 +1,21 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
+import 'package:enrx_calculator/pages/calculator2_page.dart';
+import 'package:enrx_calculator/pages/request_order.dart';
+import 'package:enrx_calculator/pages/store_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../pages/calculator_page.dart';
 import '../pages/photo_view.dart';
 
-class TFFormulaTab extends StatefulWidget {
+class ONSTab extends StatefulWidget {
   @override
-  _TFFormulaTabState createState() => _TFFormulaTabState();
+  _ONSTabState createState() => _ONSTabState();
 }
 
-class _TFFormulaTabState extends State<TFFormulaTab> {
+class _ONSTabState extends State<ONSTab> {
   Future<List<Map<String, dynamic>>>? _dataFuture;
   List<Map<String, dynamic>> _contentData = [];
   final int tabNo = 0;
@@ -74,22 +76,53 @@ class _TFFormulaTabState extends State<TFFormulaTab> {
           onTap: () {
             List<Map<String, String>> content = [];
             List<String> listString = [
-              "weight (g)", "Energy (kcal)", "Water (mL)", "Protein Amino Acid (g)",
-              "Fat (g)", "ω-3 fatty acid (g)", "Carbohydrate (g)", "Dietary Fiber (g)",
-              "Sodium (mg)", "Potassium (mg)", "Chloride (mg)", "Calcium (mg)",
-              "Magnesium (mg)", "Phosphorous (mg)", "Iron (mg)", "Zinc (mg)",
-              "Selenium (μg)", "Copper (mg)", "Manganese (mg)", "Iodine (μg)",
-              "Chromium (μg)", "Molybdenum (μg)", "Vitamin A (μg)", "Vitamin D (μg)",
-              "Vitamin E (IU)", "Vitamin K (μg)", "Vitamin B1 (mg)", "Vitamin B2 (mg)",
-              "Niacin (mg)", "Vitamin B6 (mg)", "Vitamin B12 (μg)", "Folic Acid (μg)",
-              "Pantothenic Acid (mg)", "Biotin (μg)", "Vitamin C (mg)", "Arginine (mg)",
-              "Glutamine (mg)", "BCAA (g)"
+              "weight (g)",
+              "Energy (kcal)",
+              "Water (mL)",
+              "Protein Amino Acid (g)",
+              "Fat (g)",
+              "ω-3 fatty acid (g)",
+              "Carbohydrate (g)",
+              "Dietary Fiber (g)",
+              "Sodium (mg)",
+              "Potassium (mg)",
+              "Chloride (mg)",
+              "Calcium (mg)",
+              "Magnesium (mg)",
+              "Phosphorous (mg)",
+              "Iron (mg)",
+              "Zinc (mg)",
+              "Selenium (μg)",
+              "Copper (mg)",
+              "Manganese (mg)",
+              "Iodine (μg)",
+              "Chromium (μg)",
+              "Molybdenum (μg)",
+              "Vitamin A (μg)",
+              "Vitamin D (μg)",
+              "Vitamin E (IU)",
+              "Vitamin K (μg)",
+              "Vitamin B1 (mg)",
+              "Vitamin B2 (mg)",
+              "Niacin (mg)",
+              "Vitamin B6 (mg)",
+              "Vitamin B12 (μg)",
+              "Folic Acid (μg)",
+              "Pantothenic Acid (mg)",
+              "Biotin (μg)",
+              "Vitamin C (mg)",
+              "Arginine (mg)",
+              "Glutamine (mg)",
+              "BCAA (g)"
             ];
             int toMapPosition = 0;
-            for (int _repeat21 = 0; _repeat21 < listString.length; _repeat21++) {
+            for (int _repeat21 = 0;
+                _repeat21 < listString.length;
+                _repeat21++) {
               Map<String, String> mapfilter = {};
               mapfilter["scoops"] = item[listString[toMapPosition]].toString();
-              mapfilter["calorie"] = item[listString[toMapPosition] + " calorie"].toString();
+              mapfilter["calorie"] =
+                  item[listString[toMapPosition] + " calorie"].toString();
               mapfilter["nutrition"] = listString[toMapPosition];
               mapfilter["Product"] = item["Product"].toString();
               mapfilter["Input"] = item["Input"].toString();
@@ -131,10 +164,18 @@ class _TFFormulaTabState extends State<TFFormulaTab> {
                         ),
                       );
                     },
+                    // conditionally load the network image
                     child: Image.network(
-                      item['Product Image'],
+                      item['Product Image'] ?? '',
                       height: 55,
                       width: 55,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.image_not_supported_outlined,
+                          color: Colors.white,
+                          size: 55,
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: 15),
@@ -169,6 +210,28 @@ class _TFFormulaTabState extends State<TFFormulaTab> {
                       ),
                     ),
                   ),
+                  GestureDetector(
+                    onTap: () {
+                      if (item['Store1'] != null && item['Store1'].isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StorePage(
+                              store1: item['Store1'],
+                            ),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Link to Follow'),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Icon(Icons.shopping_cart, color: Color(0xFFF89F5B)),
+                  ),
+                  const SizedBox(width: 15),
                 ],
               ),
             ),
@@ -180,7 +243,7 @@ class _TFFormulaTabState extends State<TFFormulaTab> {
 
   FloatingActionButton _fab() {
     return FloatingActionButton(
-      backgroundColor: Colors.deepOrangeAccent,
+      backgroundColor: const Color(0xFF422546),
       onPressed: () async {
         final connectivityResult = await Connectivity().checkConnectivity();
         if (connectivityResult == ConnectivityResult.none) {
@@ -198,7 +261,8 @@ class _TFFormulaTabState extends State<TFFormulaTab> {
   Future<List<Map<String, dynamic>>> _fetchData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final key = 'tab_$tabNo'; // Use the correct key for tab number 0 for ENRX tab
+      final key =
+          'tab_$tabNo'; // Use the correct key for tab number 0 for ENRX tab
       final jsonData = prefs.getString(key);
 
       if (jsonData != null) {
