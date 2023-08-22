@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 import '../webview/navigation_controls.dart';
 import '../webview/web_view_stack.dart';
 
-class StorePage extends StatefulWidget {
-  const StorePage({Key? key, required this.store1}) : super(key: key);
+class WebPage extends StatefulWidget {
+  const WebPage({Key? key, required this.linkUrl, required this.title}) : super(key: key);
 
-  final String store1; // Store the value of store1
+  final String linkUrl; // Store the value of store1
+  final String title;
 
   @override
-  State<StorePage> createState() => _StorePageState();
+  State<WebPage> createState() => _WebPageState();
 }
 
-class _StorePageState extends State<StorePage> {
+class _WebPageState extends State<WebPage> {
   late final WebViewController controller;
 
   @override
@@ -21,7 +21,7 @@ class _StorePageState extends State<StorePage> {
     super.initState();
     controller = WebViewController()
       ..loadRequest(
-        Uri.parse(widget.store1), // Use the store1 parameter as the URL
+        Uri.parse(widget.linkUrl), // Use the store1 parameter as the URL
       );
   }
 
@@ -32,9 +32,9 @@ class _StorePageState extends State<StorePage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
-        title: const Text(
-          'Request Order',
-          style: TextStyle(color: Colors.black),
+        title: Text(
+          widget.title,
+          style: const TextStyle(color: Colors.black),
         ),
         iconTheme: const IconThemeData(color: Colors.black),
         actions: [

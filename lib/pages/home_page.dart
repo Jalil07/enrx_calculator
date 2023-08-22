@@ -1,8 +1,10 @@
+import 'package:enrx_calculator/pages/company_links.dart';
 import 'package:enrx_calculator/pages/micronutrients_page.dart';
 import 'package:enrx_calculator/pages/ons_page.dart.dart';
 import 'package:flutter/material.dart';
 
 import '../tabs/micronutrients_tab.dart';
+import 'other_links.dart';
 
 class HomePage extends StatelessWidget {
   final List<String> menuLabels = [
@@ -110,8 +112,20 @@ Widget menuStack(BuildContext context, int index, String label) {
             builder: (context) => MicronutrientsPage(),
           ),
         );
-      } else if (index == 2) {  // Index 2 corresponds to 'Company Links'
-        // Navigate to the respective page for index 2
+      } else if (index == 2) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CompanyLinksPage(),
+          ),
+        );
+      } else if (index == 3) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OtherLinksPage(),
+          ),
+        );
       }
       // Add more conditions for other menu items as needed
     },

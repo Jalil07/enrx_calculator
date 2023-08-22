@@ -9,7 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../pages/calculator_page.dart';
 import '../pages/photo_view.dart';
-import '../pages/store_page.dart';
+import '../pages/web_page.dart';
 
 class RehydrationTab extends StatefulWidget {
   @override
@@ -193,8 +193,8 @@ class _RehydrationTabState extends State<RehydrationTab> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => StorePage(
-                                      store1: item['Store1'],
+                                    builder: (context) => WebPage(
+                                      linkUrl: item['Store1'], title: 'Request Order',
                                     ),
                                   ),
                                 );

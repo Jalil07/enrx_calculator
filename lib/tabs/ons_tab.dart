@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:enrx_calculator/pages/store_page.dart';
+import 'package:enrx_calculator/pages/web_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -231,8 +231,8 @@ class _ONSTabState extends State<ONSTab> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => StorePage(
-                                      store1: item['Store1'],
+                                    builder: (context) => WebPage(
+                                      linkUrl: item['Store1'], title: 'Request Order',
                                     ),
                                   ),
                                 );
