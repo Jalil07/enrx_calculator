@@ -2,8 +2,8 @@ import 'package:enrx_calculator/pages/company_links.dart';
 import 'package:enrx_calculator/pages/micronutrients_page.dart';
 import 'package:enrx_calculator/pages/ons_page.dart.dart';
 import 'package:flutter/material.dart';
-
-import '../tabs/micronutrients_tab.dart';
+import 'about_app.dart';
+import 'guide_page.dart';
 import 'other_links.dart';
 
 class HomePage extends StatelessWidget {
@@ -124,6 +124,20 @@ Widget menuStack(BuildContext context, int index, String label) {
           context,
           MaterialPageRoute(
             builder: (context) => OtherLinksPage(),
+          ),
+        );
+      } else if (index == 4) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GuidePage(),
+          ),
+        );
+      } else if (index == 5) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AboutAppPage(),
           ),
         );
       }
