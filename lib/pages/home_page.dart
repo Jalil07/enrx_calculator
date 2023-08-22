@@ -1,5 +1,8 @@
+import 'package:enrx_calculator/pages/micronutrients_page.dart';
 import 'package:enrx_calculator/pages/ons_page.dart.dart';
 import 'package:flutter/material.dart';
+
+import '../tabs/micronutrients_tab.dart';
 
 class HomePage extends StatelessWidget {
   final List<String> menuLabels = [
@@ -21,42 +24,44 @@ class HomePage extends StatelessWidget {
           children: [
             Stack(
               children: [
-                CustomPaint(
-                  size: const Size(double.infinity, 200),
-                  painter: RPSCustomPainter(),
-                ),
-                const SizedBox(
-                  height: 175,
-                  width: double.infinity,
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 16.0),
-                      child: Opacity(
-                        opacity: 0.5,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'EN RX',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              'Calculator',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.normal,
-                              ),
-                            ),
-                          ],
+                ClipPath(
+                  clipper: WaveClipper(),
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 25),
+                    color: const Color(0xFF422546),
+                    height: 140,
+                    width: double.infinity,
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'ENRX',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
+                        Text(
+                          'Calculator',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Opacity(
+                  opacity: 0.5,
+                  child: ClipPath(
+                    clipper: WaveClipper(),
+                    child: Container(
+                      color: const Color(0xFF422546),
+                      height: 160,
                     ),
                   ),
                 ),
@@ -91,12 +96,24 @@ Widget menuStack(BuildContext context, int index, String label) {
   const double borderRadius = 12;
   return InkWell(
     onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TFFormulaPage(),
-        ),
-      );
+      if (index == 0) {  // Assuming index 0 corresponds to 'ONS/TF Formula'
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TFFormulaPage(),
+          ),
+        );
+      } else if (index == 1) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MicronutrientsPage(),
+          ),
+        );
+      } else if (index == 2) {  // Index 2 corresponds to 'Company Links'
+        // Navigate to the respective page for index 2
+      }
+      // Add more conditions for other menu items as needed
     },
     child: Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -107,7 +124,7 @@ Widget menuStack(BuildContext context, int index, String label) {
           width: 0,
           color: const Color(
             0xFFAFAD93,
-          ), // Add a 3-pixel border stroke with color #AFAD93
+          ),
         ),
       ),
       child: Column(
@@ -116,53 +133,41 @@ Widget menuStack(BuildContext context, int index, String label) {
           Image.asset('assets/images/image${index + 1}.png', height: 45, width: 45,),
           const SizedBox(height: 8),
           FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(label)),
+            fit: BoxFit.scaleDown,
+            child: Text(label),
+          ),
         ],
       ),
     ),
   );
 }
 
-class RPSCustomPainter extends CustomPainter{
+// Wave Clipper watch tutorial here
+// https://www.youtube.com/watch?v=8QdLBQhnHAQ
 
+class WaveClipper extends CustomClipper<Path> {
   @override
-  void paint(Canvas canvas, Size size) {
+  Path getClip(Size size) {
+    debugPrint(size.width.toString());
+    var path = Path();
+    path.lineTo(0, size.height);
 
-    // Layer 1
-    Paint paint_fill_0 = Paint()
-      ..color = const Color.fromARGB(255, 66, 37, 70)
-      ..style = PaintingStyle.fill
-      ..strokeWidth = size.width*0.00
-      ..strokeCap = StrokeCap.butt
-      ..strokeJoin = StrokeJoin.miter;
+    var firstStart = Offset(size.width / 5, size.height);
+    var firstEnd = Offset(size.width / 2.25, size.height - 50.0);
+    path.quadraticBezierTo(firstStart.dx, firstStart.dy, firstEnd.dx, firstEnd.dy);
 
-    Path path_0 = Path();
-    path_0.moveTo(0,size.height*-0.0014286);
-    path_0.lineTo(size.width*-0.0008333,size.height*0.7828571);
-    path_0.quadraticBezierTo(size.width*0.0091667,size.height*0.7207143,size.width*0.0416667,size.height*0.7142857);
-    path_0.cubicTo(size.width*0.1397917,size.height*0.7146429,size.width*0.8343750,size.height*0.7139286,size.width*0.9175000,size.height*0.7142857);
-    path_0.cubicTo(size.width*0.9810417,size.height*0.7146429,size.width,size.height*0.6575000,size.width*1.0016667,size.height*0.5671429);
-    path_0.quadraticBezierTo(size.width*1.0037500,size.height*0.4075000,size.width,size.height*0.0014286);
-    path_0.lineTo(0,size.height*-0.0014286);
-    path_0.close();
+    var secondStart = Offset(size.width - (size.width / 3.24), size.height - 105.0);
+    var secondEnd = Offset(size.width, size.height - 10.0);
+    path.quadraticBezierTo(secondStart.dx, secondStart.dy, secondEnd.dx, secondEnd.dy);
 
-    canvas.drawPath(path_0, paint_fill_0);
-
-    // Layer 1
-    Paint paint_stroke_0 = Paint()
-      ..color = const Color.fromARGB(255, 66, 37, 70)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = size.width*0.00
-      ..strokeCap = StrokeCap.butt
-      ..strokeJoin = StrokeJoin.miter;
-
-    canvas.drawPath(path_0, paint_stroke_0);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return false;
   }
 }
 

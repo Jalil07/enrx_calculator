@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Calculator2Page extends StatefulWidget {
   final String contentJson;
+  final String product;
 
   const Calculator2Page({
     Key? key,
-    required this.contentJson, required store1,
+    required this.contentJson, required this.product,
   }) : super(key: key);
 
   @override
@@ -49,39 +51,83 @@ class _Calculator2PageState extends State<Calculator2Page> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF422546),
         elevation: 0,
-        title: Text('Calculator Page'),
-      ),
-      body: ListView.builder(
-        shrinkWrap: true,
-        itemCount: _content.length,
-        itemBuilder: (context, index) {
-          Map<String, String> item = _content[index];
-          double scoopsValue = double.tryParse(item["scoops"]!) ?? 0.0;
-          double calculatedValue = scoopsValue * _inputValue;
-
-          String displayValue;
-          if (calculatedValue == calculatedValue.toInt()) {
-            displayValue = calculatedValue.toInt().toString();
-          } else {
-            displayValue = calculatedValue.toStringAsFixed(2);
-          }
-
-          return Column(
+        title: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(widget.product)),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(48), // Set the preferred height of the bottom row
+          child: Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  children: [
-                    Text(item["nutrition"]!),
-                    const Spacer(),
-                    Text(displayValue),
-                  ],
-                ),
+                padding: EdgeInsets.all(8.0),
+                child: Text('Supplements per cap/tab', style: TextStyle(color: Colors.white)),
               ),
-              if (index < _content.length - 1) const Divider(),
+              Spacer(),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Content', style: TextStyle(color: Colors.white)),
+              ),
             ],
-          );
-        },
+          ),
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: _content.length,
+              itemBuilder: (context, index) {
+                Map<String, String> item = _content[index];
+                double scoopsValue = double.tryParse(item["scoops"]!) ?? 0.0;
+                double calculatedValue = scoopsValue * _inputValue;
+
+                String displayValue;
+                if (calculatedValue == calculatedValue.toInt()) {
+                  displayValue = calculatedValue.toInt().toString();
+                } else {
+                  displayValue = calculatedValue.toStringAsFixed(2);
+                }
+
+                return Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Clipboard.setData(ClipboardData(text: '${widget.product}: ${item["nutrition"]! } $displayValue'));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Copied')),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          children: [
+                            Text(item["nutrition"]!),
+                            const Spacer(),
+                            Text(displayValue),
+                          ],
+                        ),
+                      ),
+                    ),
+                    if (index < _content.length - 1) const Divider(),
+                  ],
+                );
+              },
+            ),
+
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _controller,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: 'Enter a value',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

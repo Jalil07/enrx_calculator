@@ -11,12 +11,12 @@ class ImagePreviewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: TextButton(onPressed: (){}, child: const Text('Request Order'),),
-          ),
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.only(right: 15),
+        //     child: TextButton(onPressed: (){}, child: const Text('Request Order'),),
+        //   ),
+        // ],
       ),
       body: Center(
         child: PhotoView(

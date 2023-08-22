@@ -6,20 +6,19 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../pages/calculator_page.dart';
 import '../pages/photo_view.dart';
 import '../pages/store_page.dart';
 
-class RehydrationTab extends StatefulWidget {
+class MicronutrientsTab extends StatefulWidget {
   @override
-  _RehydrationTabState createState() => _RehydrationTabState();
+  _MicronutrientsTabState createState() => _MicronutrientsTabState();
 }
 
-class _RehydrationTabState extends State<RehydrationTab> {
+class _MicronutrientsTabState extends State<MicronutrientsTab> {
   Future<List<Map<String, dynamic>>>? _dataFuture;
   List<Map<String, dynamic>> _contentData = [];
-  final int tabNo = 4;
+  final int tabNo = 1;
 
   @override
   void initState() {
@@ -77,8 +76,17 @@ class _RehydrationTabState extends State<RehydrationTab> {
           onTap: () {
             List<Map<String, String>> content = [];
             List<String> listString = [
-              "Calories", "CHO (g)", "Protein", "Na (mg)",
-              "K (mg)", "Cl (mEq/L)", "Mg (mg)", "Ca (mg)",
+              "ω-3 fatty acid (g)", "Carbohydrate (g)", "Dietary Fiber (g)", "Sodium (mg)",
+              "Potassium (mg)", "Chloride (mg)", "Calcium (mg)", "Magnesium (mg)",
+              "Phosphorous (mg)", "Iron (mg)", "Lutein (mcg)", "Zinc (mg)", "Selenium (μg)",
+              "Copper (mg)", "Manganese (mg)", "Iodine (μg)", "Chromium (μg)",
+              "Molybdenum (μg)", "Vitamin A (IU/ml)", "Vitamin D (IU/ml or cap)",
+              "Vitamin E (IU)", "Vitamin K (μg)", "Vitamin B1 or Thiamine (mg)",
+              "Vitamin B2 or Riboflavin (mg)", "Niacin or B3 (mg)",
+              "Vitamin B6 or Pyridoxine (mg)", "Vitamin B12 or Cobalamin (μg)",
+              "Folic Acid or B9 (μg)", "Pantothenic Acid or B5 (mg)",
+              "Biotin or B7 (μg)", "Vitamin C (mg)", "Arginine (mg)", "Glutamine (mg)",
+              "BCAA (g)",
             ];
             int toMapPosition = 0;
             for (int _repeat21 = 0; _repeat21 < listString.length; _repeat21++) {
@@ -115,37 +123,26 @@ class _RehydrationTabState extends State<RehydrationTab> {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      if (item['Product Image'] != null && item['Product Image'].isNotEmpty) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ImagePreviewPage(
-                              imageUrl: item['Product Image'],
+                      onTap: () {
+                        if (item['Product Image'] != null && item['Product Image'].isNotEmpty) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ImagePreviewPage(
+                                imageUrl: item['Product Image'],
+                              ),
                             ),
-                          ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('No image available'),
-                          ),
-                        );
-                      }
-                    },
-                    // conditionally load the network image
-                    child: Image.network(
-                      item['Product Image'] ?? '',
-                      height: 55,
-                      width: 55,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(
-                          Icons.image_not_supported_outlined,
-                          color: Colors.white,
-                          size: 55,
-                        );
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('No image available'),
+                            ),
+                          );
+                        }
                       },
-                    ),
+                      // conditionally load the network image
+                    child: Image.asset('assets/images/product.png', height: 55, width: 55,)
                   ),
                   const SizedBox(width: 15),
                   Expanded(
@@ -169,7 +166,7 @@ class _RehydrationTabState extends State<RehydrationTab> {
                                 fontSize: 13),
                           ),
                           Text(
-                            item['Info'],
+                            item['Micronutrient'],
                             style: const TextStyle(
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.w500,

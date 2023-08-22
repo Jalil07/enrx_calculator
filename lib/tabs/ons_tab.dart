@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
-import 'package:enrx_calculator/pages/calculator2_page.dart';
-import 'package:enrx_calculator/pages/request_order.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:enrx_calculator/pages/store_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -137,7 +136,7 @@ class _ONSTabState extends State<ONSTab> {
               context,
               MaterialPageRoute(
                 builder: (context) => CalculatorPage(
-                  contentJson: contentJson,
+                  contentJson: contentJson, product: item["Product"],
                 ),
               ),
             );
@@ -148,21 +147,29 @@ class _ONSTabState extends State<ONSTab> {
                 top: index == 0 ? 6 : 3,
                 bottom: index == _contentData.length - 1 ? 75 : 3,
                 left: 3,
-                right: 3,
+                right: 0,
               ),
               color: Colors.white,
               child: Row(
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ImagePreviewPage(
-                            imageUrl: item['Product Image'],
+                      if (item['Product Image'] != null && item['Product Image'].isNotEmpty) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ImagePreviewPage(
+                              imageUrl: item['Product Image'],
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('No image available'),
+                          ),
+                        );
+                      }
                     },
                     // conditionally load the network image
                     child: Image.network(
@@ -210,28 +217,59 @@ class _ONSTabState extends State<ONSTab> {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      if (item['Store1'] != null && item['Store1'].isNotEmpty) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StorePage(
-                              store1: item['Store1'],
+                  SizedBox(
+                    height: double.infinity,
+                    width: 55,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (item['Store1'] != null && item['Store1'].isNotEmpty) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => StorePage(
+                                      store1: item['Store1'],
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Link to Follow'),
+                                  ),
+                                );
+                              }
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              color: const Color(0xFFF89F5B),
+                              child: const Icon(Icons.shopping_cart, color: Colors.white),
                             ),
                           ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Link to Follow'),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              String subject =
+                                  'EN RX Calculator: Feedback for ${item['Product']} (${item['Info']})';
+                              String body = '';
+                              _launchGmail(subject, body);
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              color: Colors.deepOrangeAccent,
+                              child: const Icon(Icons.feedback, color: Colors.white),
+                            ),
                           ),
-                        );
-                      }
-                    },
-                    child: const Icon(Icons.shopping_cart, color: Color(0xFFF89F5B)),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(width: 15),
                 ],
               ),
             ),
@@ -243,7 +281,7 @@ class _ONSTabState extends State<ONSTab> {
 
   FloatingActionButton _fab() {
     return FloatingActionButton(
-      backgroundColor: const Color(0xFF422546),
+      backgroundColor: Colors.purple,
       onPressed: () async {
         final connectivityResult = await Connectivity().checkConnectivity();
         if (connectivityResult == ConnectivityResult.none) {
@@ -364,5 +402,14 @@ class _ONSTabState extends State<ONSTab> {
         );
       },
     );
+  }
+
+  //open gmail
+  Future<void> _launchGmail(String subject, String body) async {
+    final Uri gmail = Uri.parse(
+        'mailto:enrxcalculator2022@gmail.com?subject=$subject&body=$body');
+    if (!await launchUrl(gmail, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch Gmail');
+    }
   }
 }

@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class CalculatorPage extends StatefulWidget {
   final String contentJson;
+  final String product;
 
   const CalculatorPage({
     Key? key,
-    required this.contentJson,
+    required this.contentJson, required this.product,
   }) : super(key: key);
 
   @override
@@ -49,7 +51,9 @@ class _CalculatorPageState extends State<CalculatorPage> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF422546),
         elevation: 0,
-        title: Text('Calculator Page'),
+        title: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(widget.product)),
       ),
       body: DefaultTabController(
         length: 2,
@@ -111,14 +115,22 @@ class _CalculatorPageState extends State<CalculatorPage> {
 
         return Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  Text(item["nutrition"]!),
-                  const Spacer(),
-                  Text(displayValue),
-                ],
+            InkWell(
+              onTap: () {
+                Clipboard.setData(ClipboardData(text: '${item["nutrition"]! } $displayValue'));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Copied')),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    Text(item["nutrition"]!),
+                    const Spacer(),
+                    Text(displayValue),
+                  ],
+                ),
               ),
             ),
             if (index < _content.length - 1) const Divider(),
@@ -134,8 +146,8 @@ class _CalculatorPageState extends State<CalculatorPage> {
       itemCount: _content.length,
       itemBuilder: (context, index) {
         Map<String, String> item = _content[index];
-        double scoopsValue = double.tryParse(item["calorie"]!) ?? 0.0;
-        double calculatedValue = scoopsValue * _inputValue;
+        double caloriesValue = double.tryParse(item["calorie"]!) ?? 0.0;
+        double calculatedValue = caloriesValue * _inputValue;
 
         String displayValue;
         if (calculatedValue == calculatedValue.toInt()) {
@@ -146,14 +158,22 @@ class _CalculatorPageState extends State<CalculatorPage> {
 
         return Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  Text(item["nutrition"]!),
-                  const Spacer(),
-                  Text(displayValue),
-                ],
+            InkWell(
+              onTap: () {
+                Clipboard.setData(ClipboardData(text: '${widget.product}: ${item["nutrition"]! } $displayValue'));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Copied')),
+                );
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  children: [
+                    Text(item["nutrition"]!),
+                    const Spacer(),
+                    Text(displayValue),
+                  ],
+                ),
               ),
             ),
             if (index < _content.length - 1) const Divider(),
