@@ -77,11 +77,19 @@ class _RehydrationTabState extends State<RehydrationTab> {
           onTap: () {
             List<Map<String, String>> content = [];
             List<String> listString = [
-              "Calories", "CHO (g)", "Protein", "Na (mg)",
-              "K (mg)", "Cl (mEq/L)", "Mg (mg)", "Ca (mg)",
+              "Calories",
+              "CHO (g)",
+              "Protein",
+              "Na (mg)",
+              "K (mg)",
+              "Cl (mEq/L)",
+              "Mg (mg)",
+              "Ca (mg)",
             ];
             int toMapPosition = 0;
-            for (int _repeat21 = 0; _repeat21 < listString.length; _repeat21++) {
+            for (int _repeat21 = 0;
+                _repeat21 < listString.length;
+                _repeat21++) {
               Map<String, String> mapfilter = {};
               mapfilter["scoops"] = item[listString[toMapPosition]].toString();
               mapfilter["nutrition"] = listString[toMapPosition];
@@ -98,7 +106,10 @@ class _RehydrationTabState extends State<RehydrationTab> {
               context,
               MaterialPageRoute(
                 builder: (context) => Calculator2Page(
-                  contentJson: contentJson, product: item["Product"],
+                  contentJson: contentJson,
+                  product: item["Product"],
+                  label: 'Number of bottles',
+                  supplement: 'Supplements per bottle',
                 ),
               ),
             );
@@ -116,7 +127,8 @@ class _RehydrationTabState extends State<RehydrationTab> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      if (item['Product Image'] != null && item['Product Image'].isNotEmpty) {
+                      if (item['Product Image'] != null &&
+                          item['Product Image'].isNotEmpty) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -189,12 +201,14 @@ class _RehydrationTabState extends State<RehydrationTab> {
                           flex: 1,
                           child: GestureDetector(
                             onTap: () {
-                              if (item['Store1'] != null && item['Store1'].isNotEmpty) {
+                              if (item['Store1'] != null &&
+                                  item['Store1'].isNotEmpty) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => WebPage(
-                                      linkUrl: item['Store1'], title: 'Request Order',
+                                      linkUrl: item['Store1'],
+                                      title: 'Request Order',
                                     ),
                                   ),
                                 );
@@ -209,7 +223,8 @@ class _RehydrationTabState extends State<RehydrationTab> {
                             child: Container(
                               width: double.infinity,
                               color: const Color(0xFFF89F5B),
-                              child: const Icon(Icons.shopping_cart, color: Colors.white),
+                              child: const Icon(Icons.shopping_cart,
+                                  color: Colors.white),
                             ),
                           ),
                         ),
@@ -225,7 +240,8 @@ class _RehydrationTabState extends State<RehydrationTab> {
                             child: Container(
                               width: double.infinity,
                               color: Colors.deepOrangeAccent,
-                              child: const Icon(Icons.feedback, color: Colors.white),
+                              child: const Icon(Icons.feedback,
+                                  color: Colors.white),
                             ),
                           ),
                         ),
@@ -261,7 +277,8 @@ class _RehydrationTabState extends State<RehydrationTab> {
   Future<List<Map<String, dynamic>>> _fetchData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final key = 'tab_$tabNo'; // Use the correct key for tab number 0 for ENRX tab
+      final key =
+          'tab_$tabNo'; // Use the correct key for tab number 0 for ENRX tab
       final jsonData = prefs.getString(key);
 
       if (jsonData != null) {

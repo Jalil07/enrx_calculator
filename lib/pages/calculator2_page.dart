@@ -5,10 +5,15 @@ import 'package:flutter/services.dart';
 class Calculator2Page extends StatefulWidget {
   final String contentJson;
   final String product;
+  final String label;
+  final String supplement;
 
   const Calculator2Page({
     Key? key,
-    required this.contentJson, required this.product,
+    required this.contentJson,
+    required this.product,
+    required this.label,
+    required this.supplement,
   }) : super(key: key);
 
   @override
@@ -41,7 +46,8 @@ class _Calculator2PageState extends State<Calculator2Page> {
 
   void _initializeContent() {
     List<dynamic> jsonList = json.decode(widget.contentJson);
-    _content = jsonList.map((dynamic map) => Map<String, String>.from(map)).toList();
+    _content =
+        jsonList.map((dynamic map) => Map<String, String>.from(map)).toList();
   }
 
   @override
@@ -51,19 +57,18 @@ class _Calculator2PageState extends State<Calculator2Page> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF422546),
         elevation: 0,
-        title: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(widget.product)),
-        bottom: const PreferredSize(
-          preferredSize: Size.fromHeight(48), // Set the preferred height of the bottom row
+        title: FittedBox(fit: BoxFit.scaleDown, child: Text(widget.product)),
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(48),
           child: Row(
             children: [
               Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text('Supplements per cap/tab', style: TextStyle(color: Colors.white)),
+                padding: const EdgeInsets.all(8.0),
+                child: Text(widget.supplement,
+                    style: const TextStyle(color: Colors.white)),
               ),
-              Spacer(),
-              Padding(
+              const Spacer(),
+              const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text('Content', style: TextStyle(color: Colors.white)),
               ),
@@ -74,12 +79,18 @@ class _Calculator2PageState extends State<Calculator2Page> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
+            child: _content.isEmpty
+                ? Center(child: Text("Nothing to display for now"))
+                : ListView.builder(
               shrinkWrap: true,
               itemCount: _content.length,
               itemBuilder: (context, index) {
                 Map<String, String> item = _content[index];
-                double scoopsValue = double.tryParse(item["scoops"]!) ?? 0.0;
+                double scoopsValue =
+                    double.tryParse(item["scoops"]!) ?? 0.0;
+                if (scoopsValue == 0.0) {
+                  return SizedBox.shrink(); // Skip entries with 0 value
+                }
                 double calculatedValue = scoopsValue * _inputValue;
 
                 String displayValue;
@@ -93,7 +104,9 @@ class _Calculator2PageState extends State<Calculator2Page> {
                   children: [
                     InkWell(
                       onTap: () {
-                        Clipboard.setData(ClipboardData(text: '${widget.product}: ${item["nutrition"]! } $displayValue'));
+                        Clipboard.setData(ClipboardData(
+                            text:
+                            '${widget.product}: ${item["nutrition"]! } $displayValue'));
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('Copied')),
                         );
@@ -109,21 +122,21 @@ class _Calculator2PageState extends State<Calculator2Page> {
                         ),
                       ),
                     ),
-                    if (index < _content.length - 1) const Divider(),
+                    if (index < _content.length - 1)
+                      const Divider(),
                   ],
                 );
               },
             ),
-
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _controller,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
-                labelText: 'Enter a value',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: widget.label,
+                border: const OutlineInputBorder(),
               ),
             ),
           ),
@@ -131,5 +144,4 @@ class _Calculator2PageState extends State<Calculator2Page> {
       ),
     );
   }
-
 }

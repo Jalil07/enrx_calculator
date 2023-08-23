@@ -76,20 +76,45 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
           onTap: () {
             List<Map<String, String>> content = [];
             List<String> listString = [
-              "ω-3 fatty acid (g)", "Carbohydrate (g)", "Dietary Fiber (g)", "Sodium (mg)",
-              "Potassium (mg)", "Chloride (mg)", "Calcium (mg)", "Magnesium (mg)",
-              "Phosphorous (mg)", "Iron (mg)", "Lutein (mcg)", "Zinc (mg)", "Selenium (μg)",
-              "Copper (mg)", "Manganese (mg)", "Iodine (μg)", "Chromium (μg)",
-              "Molybdenum (μg)", "Vitamin A (IU/ml)", "Vitamin D (IU/ml or cap)",
-              "Vitamin E (IU)", "Vitamin K (μg)", "Vitamin B1 or Thiamine (mg)",
-              "Vitamin B2 or Riboflavin (mg)", "Niacin or B3 (mg)",
-              "Vitamin B6 or Pyridoxine (mg)", "Vitamin B12 or Cobalamin (μg)",
-              "Folic Acid or B9 (μg)", "Pantothenic Acid or B5 (mg)",
-              "Biotin or B7 (μg)", "Vitamin C (mg)", "Arginine (mg)", "Glutamine (mg)",
+              "ω-3 fatty acid (g)",
+              "Carbohydrate (g)",
+              "Dietary Fiber (g)",
+              "Sodium (mg)",
+              "Potassium (mg)",
+              "Chloride (mg)",
+              "Calcium (mg)",
+              "Magnesium (mg)",
+              "Phosphorous (mg)",
+              "Iron (mg)",
+              "Lutein (mcg)",
+              "Zinc (mg)",
+              "Selenium (μg)",
+              "Copper (mg)",
+              "Manganese (mg)",
+              "Iodine (μg)",
+              "Chromium (μg)",
+              "Molybdenum (μg)",
+              "Vitamin A (IU/ml)",
+              "Vitamin D (IU/ml or cap)",
+              "Vitamin E (IU)",
+              "Vitamin K (μg)",
+              "Vitamin B1 or Thiamine (mg)",
+              "Vitamin B2 or Riboflavin (mg)",
+              "Niacin or B3 (mg)",
+              "Vitamin B6 or Pyridoxine (mg)",
+              "Vitamin B12 or Cobalamin (μg)",
+              "Folic Acid or B9 (μg)",
+              "Pantothenic Acid or B5 (mg)",
+              "Biotin or B7 (μg)",
+              "Vitamin C (mg)",
+              "Arginine (mg)",
+              "Glutamine (mg)",
               "BCAA (g)",
             ];
             int toMapPosition = 0;
-            for (int _repeat21 = 0; _repeat21 < listString.length; _repeat21++) {
+            for (int _repeat21 = 0;
+                _repeat21 < listString.length;
+                _repeat21++) {
               Map<String, String> mapfilter = {};
               mapfilter["scoops"] = item[listString[toMapPosition]].toString();
               mapfilter["nutrition"] = listString[toMapPosition];
@@ -106,7 +131,10 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
               context,
               MaterialPageRoute(
                 builder: (context) => Calculator2Page(
-                  contentJson: contentJson, product: item["Product"],
+                  contentJson: contentJson,
+                  product: item["Product"],
+                  label: 'Number of tablets/capsules',
+                  supplement: 'Supplements per cap/tab',
                 ),
               ),
             );
@@ -124,7 +152,8 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
                 children: [
                   GestureDetector(
                       onTap: () {
-                        if (item['Product Image'] != null && item['Product Image'].isNotEmpty) {
+                        if (item['Product Image'] != null &&
+                            item['Product Image'].isNotEmpty) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -142,8 +171,11 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
                         }
                       },
                       // conditionally load the network image
-                    child: Image.asset('assets/images/product.png', height: 55, width: 55,)
-                  ),
+                      child: Image.asset(
+                        'assets/images/product.png',
+                        height: 55,
+                        width: 55,
+                      )),
                   const SizedBox(width: 15),
                   Expanded(
                     child: Padding(
@@ -186,12 +218,14 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
                           flex: 1,
                           child: GestureDetector(
                             onTap: () {
-                              if (item['Store1'] != null && item['Store1'].isNotEmpty) {
+                              if (item['Store1'] != null &&
+                                  item['Store1'].isNotEmpty) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => WebPage(
-                                      linkUrl: item['Store1'], title: 'Request Order',
+                                      linkUrl: item['Store1'],
+                                      title: 'Request Order',
                                     ),
                                   ),
                                 );
@@ -206,7 +240,8 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
                             child: Container(
                               width: double.infinity,
                               color: const Color(0xFFF89F5B),
-                              child: const Icon(Icons.shopping_cart, color: Colors.white),
+                              child: const Icon(Icons.shopping_cart,
+                                  color: Colors.white),
                             ),
                           ),
                         ),
@@ -222,7 +257,8 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
                             child: Container(
                               width: double.infinity,
                               color: Colors.deepOrangeAccent,
-                              child: const Icon(Icons.feedback, color: Colors.white),
+                              child: const Icon(Icons.feedback,
+                                  color: Colors.white),
                             ),
                           ),
                         ),
@@ -258,7 +294,8 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
   Future<List<Map<String, dynamic>>> _fetchData() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final key = 'tab_$tabNo'; // Use the correct key for tab number 0 for ENRX tab
+      final key =
+          'tab_$tabNo'; // Use the correct key for tab number 0 for ENRX tab
       final jsonData = prefs.getString(key);
 
       if (jsonData != null) {

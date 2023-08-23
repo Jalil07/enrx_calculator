@@ -6,6 +6,7 @@ class GuidePage extends StatelessWidget {
     fontFamily: 'Poppins',
     fontSize: 15,
     color: Colors.black,
+    fontWeight: FontWeight.bold, // Added bold to the custom style
   );
 
   @override
@@ -85,9 +86,14 @@ class GuidePage extends StatelessWidget {
                         height: 75,
                         width: 75,
                       ),
-                      Text(
+                      const Text(
                         'Contact Us',
-                        style: _customTextStyle,
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: 15,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold, // Added bold to the custom style
+                        ),
                       )
                     ],
                   ),
