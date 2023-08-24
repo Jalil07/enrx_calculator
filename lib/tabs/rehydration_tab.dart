@@ -12,6 +12,10 @@ import '../pages/photo_view.dart';
 import '../pages/web_page.dart';
 
 class RehydrationTab extends StatefulWidget {
+  final String searchQuery; // Search query passed from TFFormulaPage
+
+  RehydrationTab({required this.searchQuery});
+
   @override
   _RehydrationTabState createState() => _RehydrationTabState();
 }
@@ -55,8 +59,9 @@ class _RehydrationTabState extends State<RehydrationTab> {
           );
         } else if (snapshot.hasData) {
           final List<Map<String, dynamic>> data = snapshot.data!;
+          final filteredData = _filterData(data); // Filter data based on search query
           return Scaffold(
-            body: _body(data),
+            body: _body(filteredData),
             floatingActionButton: _fab(),
           );
         } else {
@@ -66,6 +71,20 @@ class _RehydrationTabState extends State<RehydrationTab> {
         }
       },
     );
+  }
+
+  List<Map<String, dynamic>> _filterData(List<Map<String, dynamic>> data) {
+    if (widget.searchQuery.isEmpty) {
+      return data; // If search query is empty, return all data
+    }
+
+    // Filter data based on search query
+    return data.where((item) {
+      return item['Product']
+          .toString()
+          .toLowerCase()
+          .contains(widget.searchQuery.toLowerCase());
+    }).toList();
   }
 
   ListView _body(List<Map<String, dynamic>> data) {

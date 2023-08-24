@@ -1,15 +1,18 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:enrx_calculator/pages/web_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../pages/calculator_page.dart';
 import '../pages/photo_view.dart';
+import '../pages/web_page.dart';
 
 class ONSTab extends StatefulWidget {
+  final String searchQuery; // Add this parameter
+
+  ONSTab({required this.searchQuery}); // Constructor
+
   @override
   _ONSTabState createState() => _ONSTabState();
 }
@@ -67,10 +70,12 @@ class _ONSTabState extends State<ONSTab> {
   }
 
   ListView _body(List<Map<String, dynamic>> data) {
+    List<Map<String, dynamic>> filteredData = _filterData(data); // Filter the data
+
     return ListView.builder(
-      itemCount: data.length,
+      itemCount: filteredData.length,
       itemBuilder: (context, index) {
-        final item = data[index];
+        final item = filteredData[index];
         return GestureDetector(
           onTap: () {
             List<Map<String, String>> content = [];
@@ -116,12 +121,12 @@ class _ONSTabState extends State<ONSTab> {
             ];
             int toMapPosition = 0;
             for (int _repeat21 = 0;
-                _repeat21 < listString.length;
-                _repeat21++) {
+            _repeat21 < listString.length;
+            _repeat21++) {
               Map<String, String> mapfilter = {};
               mapfilter["scoops"] = item[listString[toMapPosition]].toString();
               mapfilter["calorie"] =
-                  item[listString[toMapPosition] + " calorie"].toString();
+                  item["${listString[toMapPosition]} calorie"].toString();
               mapfilter["nutrition"] = listString[toMapPosition];
               mapfilter["Product"] = item["Product"].toString();
               mapfilter["Input"] = item["Input"].toString();
@@ -279,21 +284,19 @@ class _ONSTabState extends State<ONSTab> {
     );
   }
 
-  FloatingActionButton _fab() {
-    return FloatingActionButton(
-      backgroundColor: Colors.purple,
-      onPressed: () async {
-        final connectivityResult = await Connectivity().checkConnectivity();
-        if (connectivityResult == ConnectivityResult.none) {
-          // No internet connection, show a Snackbar
-          await _showNoInternetSnackbar();
-          return; // Don't proceed with the action
-        }
+  List<Map<String, dynamic>> _filterData(List<Map<String, dynamic>> data) {
+    if (widget.searchQuery.isEmpty) {
+      return data; // Return original data if search query is empty
+    }
 
-        showRefreshDialog();
-      },
-      child: const Icon(Icons.refresh),
-    );
+    String normalizedQuery = widget.searchQuery.toLowerCase();
+
+    return data.where((item) {
+      // Customize this condition based on your filtering needs
+      return item['Product'].toLowerCase().contains(normalizedQuery) ||
+          item['Formula'].toLowerCase().contains(normalizedQuery) ||
+          item['Info'].toLowerCase().contains(normalizedQuery);
+    }).toList();
   }
 
   Future<List<Map<String, dynamic>>> _fetchData() async {
@@ -401,6 +404,23 @@ class _ONSTabState extends State<ONSTab> {
           ],
         );
       },
+    );
+  }
+
+  FloatingActionButton _fab() {
+    return FloatingActionButton(
+      backgroundColor: Colors.purple,
+      onPressed: () async {
+        final connectivityResult = await Connectivity().checkConnectivity();
+        if (connectivityResult == ConnectivityResult.none) {
+          // No internet connection, show a Snackbar
+          await _showNoInternetSnackbar();
+          return; // Don't proceed with the action
+        }
+
+        showRefreshDialog();
+      },
+      child: const Icon(Icons.refresh),
     );
   }
 
