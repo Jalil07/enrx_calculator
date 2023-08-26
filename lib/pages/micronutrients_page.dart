@@ -1,38 +1,15 @@
-import 'package:enrx_calculator/pages/micronutrients_page.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../tabs/micronutrients_tab.dart';
-import '../tabs/ons_tab.dart';
-import '../tabs/rehydration_tab.dart';
 
-class MicronutrientsPage extends StatelessWidget {
-  // More app
-  final Uri _moreAppUrl = Uri.parse(
-      'https://apps.apple.com/us/developer/joenardson-divino/id1682679666');
+class MicronutrientsPage extends StatefulWidget {
+  @override
+  State<MicronutrientsPage> createState() => _MicronutrientsPageState();
+}
 
-  Future<void> _launchStore() async {
-    if (!await launchUrl(_moreAppUrl, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $_moreAppUrl');
-    }
-  }
-
-  // Open gmail
-  Future<void> _launchGmail(String subject, String body) async {
-    final Uri gmail = Uri.parse(
-        'mailto:jsd.application@gmail.com?subject=$subject&body=$body');
-    if (!await launchUrl(gmail, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch Gmail');
-    }
-  }
-
-  // Open messenger
-  final Uri _messenger = Uri.parse('fb-messenger://user/100822268042440');
-
-  Future<void> _launchMessenger() async {
-    if (!await launchUrl(_messenger, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch Messenger');
-    }
-  }
+class _MicronutrientsPageState extends State<MicronutrientsPage> {
+  String _searchQuery = ''; // State to hold the search query
+  bool _isSearchBarHidden =
+      true; // State to track whether the search bar is hidden or not
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +17,62 @@ class MicronutrientsPage extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: const Color(0xFF422546),
-          title: const FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text('Micronutrients'),
-          ),
           iconTheme: const IconThemeData(color: Colors.white),
+          title: _isSearchBarHidden
+              ? const FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text('Micronutrients'),
+                )
+              : Container(
+                  padding: const EdgeInsets.only(left: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        color: Colors.white,
+                        width: 1.0), // Add 2-pixel white border
+                    borderRadius:
+                        BorderRadius.circular(8), // Add rounded corners
+                  ),
+                  child: TextField(
+                    style: const TextStyle(
+                        color: Colors.white), // Set text color to white
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value; // Update the search query
+                      });
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      hintStyle: TextStyle(
+                          color: Colors.white
+                              .withOpacity(0.6)), // Set hint text color
+// prefixIcon: const Icon(Icons.search, color: Colors.white, size: 20,), // Set icon color
+                      focusedBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors
+                                .transparent), // Remove the line below the search bar
+                      ),
+                      enabledBorder: const UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Colors
+                                .transparent), // Remove the line below the search bar
+                      ),
+                    ),
+                  ),
+                ),
+          actions: [
+            IconButton(
+              splashRadius: 25,
+              onPressed: () {
+                setState(() {
+                  _isSearchBarHidden =
+                      !_isSearchBarHidden; // Toggle the search bar
+                  _searchQuery = ''; // Clear the search query when toggling
+                });
+              },
+              icon: Icon(_isSearchBarHidden ? Icons.search : Icons.clear),
+            ),
+          ],
         ),
-        body: MicronutrientsTab());
+        body: MicronutrientsTab(searchQuery: _searchQuery,));
   }
 }

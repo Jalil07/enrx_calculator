@@ -1,20 +1,22 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
-import 'package:enrx_calculator/pages/calculator2_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../pages/calculator_page.dart';
+import '../pages/calculator2_page.dart';
 import '../pages/photo_view.dart';
 import '../pages/web_page.dart';
 
 class MicronutrientsTab extends StatefulWidget {
+  final String searchQuery; // Pass the search query as a parameter
+
+  MicronutrientsTab({required this.searchQuery});
+
   @override
   _MicronutrientsTabState createState() => _MicronutrientsTabState();
 }
-
 class _MicronutrientsTabState extends State<MicronutrientsTab> {
   Future<List<Map<String, dynamic>>>? _dataFuture;
   List<Map<String, dynamic>> _contentData = [];
@@ -28,6 +30,7 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
 
   @override
   Widget build(BuildContext context) {
+    final filteredData = _filterData(_contentData); // Apply search filter
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: _dataFuture,
       builder: (context, snapshot) {
@@ -55,7 +58,7 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
         } else if (snapshot.hasData) {
           final List<Map<String, dynamic>> data = snapshot.data!;
           return Scaffold(
-            body: _body(data),
+            body: _body(filteredData),
             floatingActionButton: _fab(),
           );
         } else {
@@ -113,8 +116,8 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
             ];
             int toMapPosition = 0;
             for (int _repeat21 = 0;
-                _repeat21 < listString.length;
-                _repeat21++) {
+            _repeat21 < listString.length;
+            _repeat21++) {
               Map<String, String> mapfilter = {};
               mapfilter["scoops"] = item[listString[toMapPosition]].toString();
               mapfilter["nutrition"] = listString[toMapPosition];
@@ -272,6 +275,17 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
         );
       },
     );
+  }
+
+  List<Map<String, dynamic>> _filterData(List<Map<String, dynamic>> data) {
+    final searchQuery = widget.searchQuery.toLowerCase(); // Use widget.searchQuery
+    if (searchQuery.isEmpty) {
+      return data;
+    }
+
+    return data.where((item) {
+      return item['Product'].toString().toLowerCase().contains(searchQuery);
+    }).toList();
   }
 
   FloatingActionButton _fab() {

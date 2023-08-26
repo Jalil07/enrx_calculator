@@ -6,8 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../pages/calculator_page.dart';
 import '../pages/photo_view.dart';
 import '../pages/web_page.dart';
 
