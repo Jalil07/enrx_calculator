@@ -122,6 +122,7 @@ class AboutAppPage extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: 35),
           ],
         ),
       ),

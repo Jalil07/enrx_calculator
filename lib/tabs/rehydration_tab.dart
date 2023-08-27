@@ -184,11 +184,70 @@ class _RehydrationTabState extends State<RehydrationTab> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            item['Product'],
-                            style: const TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  item['Product'],
+                                  style: const TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  softWrap: true,
+                                  maxLines: 2,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              if (item['Vegan'] == 'Vegan')
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Product Info'),
+                                          content: const Text('This product is certified vegetarian-safe.'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Close'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Image.asset('assets/images/vegan.png', height: 15, width: 15),
+                                ),
+                              const SizedBox(width: 8),
+                              if (item['Halal'] == 'Halal')
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Product Info'),
+                                          content: const Text('This product is Halal certified.'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Close'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Image.asset('assets/images/halal.png', height: 15, width: 15),
+                                ),
+                            ],
                           ),
                           Text(
                             item['Company'],

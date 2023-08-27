@@ -8,8 +8,7 @@ class MicronutrientsPage extends StatefulWidget {
 
 class _MicronutrientsPageState extends State<MicronutrientsPage> {
   String _searchQuery = ''; // State to hold the search query
-  bool _isSearchBarHidden =
-      true; // State to track whether the search bar is hidden or not
+  bool _isSearchBarHidden = true; // State to track whether the search bar is hidden or not
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +25,7 @@ class _MicronutrientsPageState extends State<MicronutrientsPage> {
               : Container(
                   padding: const EdgeInsets.only(left: 15),
                   decoration: BoxDecoration(
+                    color: Colors.white,
                     border: Border.all(
                         color: Colors.white,
                         width: 1.0), // Add 2-pixel white border
@@ -34,7 +34,7 @@ class _MicronutrientsPageState extends State<MicronutrientsPage> {
                   ),
                   child: TextField(
                     style: const TextStyle(
-                        color: Colors.white), // Set text color to white
+                        color: Colors.black), // Set text color to white
                     onChanged: (value) {
                       setState(() {
                         _searchQuery = value; // Update the search query
@@ -43,7 +43,7 @@ class _MicronutrientsPageState extends State<MicronutrientsPage> {
                     decoration: InputDecoration(
                       hintText: 'Search...',
                       hintStyle: TextStyle(
-                          color: Colors.white
+                          color: Colors.grey
                               .withOpacity(0.6)), // Set hint text color
 // prefixIcon: const Icon(Icons.search, color: Colors.white, size: 20,), // Set icon color
                       focusedBorder: const UnderlineInputBorder(
@@ -53,8 +53,7 @@ class _MicronutrientsPageState extends State<MicronutrientsPage> {
                       ),
                       enabledBorder: const UnderlineInputBorder(
                         borderSide: BorderSide(
-                            color: Colors
-                                .transparent), // Remove the line below the search bar
+                            color: Colors.transparent), // Remove the line below the search bar
                       ),
                     ),
                   ),

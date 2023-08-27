@@ -1,22 +1,23 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
+import 'package:enrx_calculator/pages/calculator2_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../pages/calculator2_page.dart';
 import '../pages/photo_view.dart';
 import '../pages/web_page.dart';
 
 class MicronutrientsTab extends StatefulWidget {
-  final String searchQuery; // Pass the search query as a parameter
+  final String searchQuery; // Search query passed from TFFormulaPage
 
   MicronutrientsTab({required this.searchQuery});
 
   @override
   _MicronutrientsTabState createState() => _MicronutrientsTabState();
 }
+
 class _MicronutrientsTabState extends State<MicronutrientsTab> {
   Future<List<Map<String, dynamic>>>? _dataFuture;
   List<Map<String, dynamic>> _contentData = [];
@@ -30,7 +31,6 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
 
   @override
   Widget build(BuildContext context) {
-    final filteredData = _filterData(_contentData); // Apply search filter
     return FutureBuilder<List<Map<String, dynamic>>>(
       future: _dataFuture,
       builder: (context, snapshot) {
@@ -57,6 +57,7 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
           );
         } else if (snapshot.hasData) {
           final List<Map<String, dynamic>> data = snapshot.data!;
+          final filteredData = _filterData(data); // Filter data based on search query
           return Scaffold(
             body: _body(filteredData),
             floatingActionButton: _fab(),
@@ -68,6 +69,20 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
         }
       },
     );
+  }
+
+  List<Map<String, dynamic>> _filterData(List<Map<String, dynamic>> data) {
+    if (widget.searchQuery.isEmpty) {
+      return data; // If search query is empty, return all data
+    }
+
+    // Filter data based on search query
+    return data.where((item) {
+      return item['Product']
+          .toString()
+          .toLowerCase()
+          .contains(widget.searchQuery.toLowerCase());
+    }).toList();
   }
 
   ListView _body(List<Map<String, dynamic>> data) {
@@ -187,11 +202,72 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            item['Product'],
-                            style: const TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Wrap(
+                                direction: Axis.vertical,
+                                children: [
+                                  Text(
+                                  item['Product'],
+                                  style: const TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                  softWrap: true,
+                                  maxLines: 2,
+                                ),]
+                              ),
+                              const SizedBox(width: 8),
+                              if (item['Vegan'] == 'Vegan')
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Product Info'),
+                                          content: const Text('This product is certified vegetarian-safe.'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Close'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Image.asset('assets/images/vegan.png', height: 15, width: 15),
+                                ),
+                              const SizedBox(width: 8),
+                              if (item['Halal'] == 'Halal')
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: const Text('Product Info'),
+                                          content: const Text('This product is Halal certified.'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Close'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Image.asset('assets/images/halal.png', height: 15, width: 15),
+                                ),
+                            ],
                           ),
                           Text(
                             item['Company'],
@@ -275,17 +351,6 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
         );
       },
     );
-  }
-
-  List<Map<String, dynamic>> _filterData(List<Map<String, dynamic>> data) {
-    final searchQuery = widget.searchQuery.toLowerCase(); // Use widget.searchQuery
-    if (searchQuery.isEmpty) {
-      return data;
-    }
-
-    return data.where((item) {
-      return item['Product'].toString().toLowerCase().contains(searchQuery);
-    }).toList();
   }
 
   FloatingActionButton _fab() {

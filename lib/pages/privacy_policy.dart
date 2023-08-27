@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class GuidePage extends StatelessWidget {
+class PolicyPage extends StatelessWidget {
   final TextStyle _customTextStyle = const TextStyle(
     fontFamily: 'Poppins',
     fontSize: 15,
@@ -15,7 +15,7 @@ class GuidePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: const Color(0xFF422546),
         title: const Text(
-          'How to use the app',
+          'Privacy Policy',
           style: TextStyle(
               fontFamily: 'Poppins',
               fontSize: 15,
@@ -47,7 +47,7 @@ class GuidePage extends StatelessWidget {
                   ),
                   TextSpan(
                     text:
-                        'You can enter the number of scoops of serving aimed for the nutritional requirement and automatically view the equivalent macronutrients and micronutrient contents.\nYou may also go to the Calorie Section to enter the amount of kcal desired and view the equivalent nutrient contents by calorie.\n\n',
+                    'You can enter the number of scoops of serving aimed for the nutritional requirement and automatically view the equivalent macronutrients and micronutrient contents.\nYou may also go to the Calorie Section to enter the amount of kcal desired and view the equivalent nutrient contents by calorie.\n\n',
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                     ),),
@@ -59,7 +59,7 @@ class GuidePage extends StatelessWidget {
                   ),
                   TextSpan(
                     text:
-                        'This simply helps us determine the amount of nutrients contained per capsule or syrup serving of an enteral multivitamin and mineral preparation.\n\n',
+                    'This simply helps us determine the amount of nutrients contained per capsule or syrup serving of an enteral multivitamin and mineral preparation.\n\n',
                     style: TextStyle(
                       fontWeight: FontWeight.normal,
                     ),),

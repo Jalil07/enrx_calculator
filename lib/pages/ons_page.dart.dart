@@ -37,24 +37,25 @@ class _TFFormulaPageState extends State<TFFormulaPage> {
               : Container(
             padding: const EdgeInsets.only(left: 15),
             decoration: BoxDecoration(
+              color: Colors.white,
               border: Border.all(color: Colors.white, width: 1.0), // Add 2-pixel white border
               borderRadius: BorderRadius.circular(8), // Add rounded corners
             ),
             child: TextField(
-              style: const TextStyle(color: Colors.white), // Set text color to white
+              style: const TextStyle(color: Colors.black), // Set text color to white
               onChanged: (value) {
                 setState(() {
                   _searchQuery = value; // Update the search query
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Search...',
-                hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)), // Set hint text color
-                // prefixIcon: const Icon(Icons.search, color: Colors.white, size: 20,), // Set icon color
-                focusedBorder: const UnderlineInputBorder(
+                hintStyle: TextStyle(color: Colors.grey), // Set hint text color
+                // suffix: Icon(Icons.clear, color: Colors.grey, size: 20,), // Set icon color
+                focusedBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.transparent), // Remove the line below the search bar
                 ),
-                enabledBorder: const UnderlineInputBorder(
+                enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.transparent), // Remove the line below the search bar
                 ),
               ),
