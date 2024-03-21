@@ -344,7 +344,7 @@ class _RehydrationTabState extends State<RehydrationTab> {
       onPressed: () async {
         final connectivityResult = await Connectivity().checkConnectivity();
         if (connectivityResult == ConnectivityResult.none) {
-          // No internet connection, show a Snackbar
+          // No internet connection, show a Snack bar
           await _showNoInternetSnackbar();
           return; // Don't proceed with the action
         }
