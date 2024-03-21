@@ -6,6 +6,8 @@ import 'about_app.dart';
 import 'guide_page.dart';
 import 'other_links.dart';
 
+/// NOTE: use apk signer to sign the aab and not the jsd-keystore
+
 class HomePage extends StatelessWidget {
   final List<String> menuLabels = [
     'ONS/TF Formula',
