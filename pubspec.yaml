@@ -42,7 +42,7 @@ dependencies:
   shared_preferences: ^2.2.0
   fluttertoast:
   photo_view: ^0.14.0
-
+  cached_network_image:
 dev_dependencies:
   flutter_test:
     sdk: flutter

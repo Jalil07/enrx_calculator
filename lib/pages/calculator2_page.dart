@@ -57,7 +57,8 @@ class _Calculator2PageState extends State<Calculator2Page> {
       appBar: AppBar(
         backgroundColor: const Color(0xFF422546),
         elevation: 0,
-        title: FittedBox(fit: BoxFit.scaleDown, child: Text(widget.product)),
+        title: FittedBox(fit: BoxFit.scaleDown, child: Text(widget.product, style: const TextStyle(color: Colors.white),)),
+        iconTheme: const IconThemeData(color: Colors.white),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(48),
           child: Row(

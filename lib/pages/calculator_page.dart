@@ -72,16 +72,20 @@ class _CalculatorPageState extends State<CalculatorPage>
       appBar: AppBar(
         backgroundColor: const Color(0xFF422546),
         elevation: 0,
-        title: FittedBox(fit: BoxFit.scaleDown, child: Text(widget.product)),
+        title: Text(widget.product, style: const TextStyle(color: Colors.white),),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Column(
         children: [
           Container(
             color: const Color(0xFF422546),
             child: TabBar(
-              controller: _tabController, // Added TabController
+              controller: _tabController, // Assume _tabController is properly initialized
               indicatorColor: Colors.white,
               indicatorWeight: 3,
+              indicatorSize: TabBarIndicatorSize.tab,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.grey,
               tabs: const [
                 Tab(text: 'Scoops'),
                 Tab(text: 'Calories'),

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../tabs/micronutrients_tab.dart';
 
 class MicronutrientsPage extends StatefulWidget {
+  const MicronutrientsPage({super.key});
+
   @override
   State<MicronutrientsPage> createState() => _MicronutrientsPageState();
 }
@@ -20,7 +22,7 @@ class _MicronutrientsPageState extends State<MicronutrientsPage> {
           title: _isSearchBarHidden
               ? const FittedBox(
                   fit: BoxFit.scaleDown,
-                  child: Text('Micronutrients'),
+                  child: Text('Micronutrients', style: TextStyle(color: Colors.white),),
                 )
               : Container(
                   padding: const EdgeInsets.only(left: 15),

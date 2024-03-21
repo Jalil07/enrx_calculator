@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:enrx_calculator/pages/calculator2_page.dart';
 import 'package:flutter/material.dart';
@@ -163,17 +164,21 @@ class _RehydrationTabState extends State<RehydrationTab> {
                       }
                     },
                     // conditionally load the network image
-                    child: Image.network(
-                      item['Product Image'] ?? '',
+                    child: CachedNetworkImage(
+                      imageUrl: item['Product Image']!,
                       height: 55,
                       width: 55,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(
-                          Icons.image_not_supported_outlined,
-                          color: Colors.white,
-                          size: 55,
-                        );
-                      },
+                      placeholder: (context, url) => const Center(
+                        child: SizedBox(
+                            height: 35,
+                            width: 35,
+                            child: CircularProgressIndicator()),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.image_not_supported_outlined,
+                        color: Colors.white,
+                        size: 55,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 15),
@@ -346,7 +351,7 @@ class _RehydrationTabState extends State<RehydrationTab> {
 
         showRefreshDialog();
       },
-      child: const Icon(Icons.refresh),
+      child: const Icon(Icons.refresh, color: Colors.white,),
     );
   }
 

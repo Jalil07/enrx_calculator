@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
-import 'package:enrx_calculator/pages/calculator2_page.dart';
+import '../pages/calculator2_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,10 +11,10 @@ import '../pages/web_page.dart';
 class MicronutrientsTab extends StatefulWidget {
   final String searchQuery; // Search query passed from TFFormulaPage
 
-  MicronutrientsTab({required this.searchQuery});
+  const MicronutrientsTab({super.key, required this.searchQuery});
 
   @override
-  _MicronutrientsTabState createState() => _MicronutrientsTabState();
+  State<MicronutrientsTab> createState() => _MicronutrientsTabState();
 }
 
 class _MicronutrientsTabState extends State<MicronutrientsTab> {
@@ -359,14 +358,14 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
       onPressed: () async {
         final connectivityResult = await Connectivity().checkConnectivity();
         if (connectivityResult == ConnectivityResult.none) {
-          // No internet connection, show a Snackbar
+          // No internet connection, show a Snack bar
           await _showNoInternetSnackbar();
           return; // Don't proceed with the action
         }
 
         showRefreshDialog();
       },
-      child: const Icon(Icons.refresh),
+      child: const Icon(Icons.refresh, color: Colors.white,),
     );
   }
 

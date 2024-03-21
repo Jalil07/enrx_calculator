@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -11,10 +12,10 @@ import '../pages/web_page.dart';
 class ONSTab extends StatefulWidget {
   final String searchQuery; // Add this parameter
 
-  ONSTab({required this.searchQuery}); // Constructor
+  const ONSTab({super.key, required this.searchQuery}); // Constructor
 
   @override
-  _ONSTabState createState() => _ONSTabState();
+  State<ONSTab> createState() => _ONSTabState();
 }
 
 class _ONSTabState extends State<ONSTab> {
@@ -177,17 +178,21 @@ class _ONSTabState extends State<ONSTab> {
                       }
                     },
                     // conditionally load the network image
-                    child: Image.network(
-                      item['Product Image'] ?? '',
+                    child: CachedNetworkImage(
+                      imageUrl: item['Product Image']!,
                       height: 55,
                       width: 55,
-                      errorBuilder: (context, error, stackTrace) {
-                        return const Icon(
-                          Icons.image_not_supported_outlined,
-                          color: Colors.white,
-                          size: 55,
-                        );
-                      },
+                      placeholder: (context, url) => const Center(
+                        child: SizedBox(
+                            height: 35,
+                            width: 35,
+                            child: CircularProgressIndicator()),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.image_not_supported_outlined,
+                        color: Colors.white,
+                        size: 55,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 15),
@@ -479,7 +484,7 @@ class _ONSTabState extends State<ONSTab> {
 
         showRefreshDialog();
       },
-      child: const Icon(Icons.refresh),
+      child: const Icon(Icons.refresh, color: Colors.white,),
     );
   }
 
