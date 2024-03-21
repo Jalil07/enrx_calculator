@@ -1,4 +1,4 @@
-import 'package:enrx_calculator/pages/web_page.dart';
+import '../pages/web_page.dart';
 import 'package:flutter/material.dart';
 
 class AboutAppPage extends StatelessWidget {
