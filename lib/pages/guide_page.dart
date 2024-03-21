@@ -9,11 +9,14 @@ class GuidePage extends StatelessWidget {
     fontWeight: FontWeight.bold, // Added bold to the custom style
   );
 
+  const GuidePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF422546),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           'How to use the app',
           style: TextStyle(

@@ -362,7 +362,6 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
           await _showNoInternetSnackbar();
           return; // Don't proceed with the action
         }
-
         showRefreshDialog();
       },
       child: const Icon(Icons.refresh, color: Colors.white,),
@@ -381,6 +380,13 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
         _contentData = List<Map<String, dynamic>>.from(listmap);
         return _contentData;
       } else {
+        // Check internet connection first
+        final connectivityResult = await Connectivity().checkConnectivity();
+        if (connectivityResult == ConnectivityResult.none) {
+          // No internet connection, show a Snack bar and exit early
+          _showNoInternetSnackbar(); // Note: No need to await here since we're just showing a snackbar
+          return []; // Return an empty list or handle accordingly
+        }
         final url =
             'https://script.google.com/macros/s/AKfycbxPvnwJiFbH0A9kya106YQ-JqRgF_gGKspxPdN-cfMvJ0fJVMiwcVTrdbvGmt9PCFIuhQ/exec?action=getMany&tabno=$tabNo&from=2&to=1000';
 

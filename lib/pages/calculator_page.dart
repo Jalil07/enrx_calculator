@@ -13,7 +13,7 @@ class CalculatorPage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CalculatorPageState createState() => _CalculatorPageState();
+  State<CalculatorPage> createState() => _CalculatorPageState();
 }
 
 class _CalculatorPageState extends State<CalculatorPage>

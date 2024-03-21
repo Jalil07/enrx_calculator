@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
-import 'package:enrx_calculator/pages/web_page.dart';
+import '../pages/web_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OtherLinksPage extends StatefulWidget {
+  const OtherLinksPage({super.key});
+
   @override
   State<OtherLinksPage> createState() => _OtherLinksPageState();
 }
@@ -31,7 +32,7 @@ class _OtherLinksPageState extends State<OtherLinksPage> {
         backgroundColor: const Color(0xFF422546),
         title: const FittedBox(
           fit: BoxFit.scaleDown,
-          child: Text('Other Links'),
+          child: Text('Other Links', style: TextStyle(color: Colors.white),),
         ),
         iconTheme: const IconThemeData(color: Colors.white),
         actions: [
@@ -228,14 +229,14 @@ class _OtherLinksPageState extends State<OtherLinksPage> {
       onPressed: () async {
         final connectivityResult = await Connectivity().checkConnectivity();
         if (connectivityResult == ConnectivityResult.none) {
-          // No internet connection, show a Snackbar
+          // No internet connection, show a Snack bar
           await _showNoInternetSnackbar();
           return; // Don't proceed with the action
         }
 
         showRefreshDialog();
       },
-      child: const Icon(Icons.refresh),
+      child: const Icon(Icons.refresh, color: Colors.white,),
     );
   }
 
@@ -251,6 +252,13 @@ class _OtherLinksPageState extends State<OtherLinksPage> {
         _contentData = List<Map<String, dynamic>>.from(listmap);
         return _contentData;
       } else {
+        // Check internet connection first
+        final connectivityResult = await Connectivity().checkConnectivity();
+        if (connectivityResult == ConnectivityResult.none) {
+          // No internet connection, show a Snack bar and exit early
+          _showNoInternetSnackbar(); // Note: No need to await here since we're just showing a snackbar
+          return []; // Return an empty list or handle accordingly
+        }
         final url =
             'https://script.google.com/macros/s/AKfycbxPvnwJiFbH0A9kya106YQ-JqRgF_gGKspxPdN-cfMvJ0fJVMiwcVTrdbvGmt9PCFIuhQ/exec?action=getMany&tabno=$tabNo&from=2&to=1000';
 
