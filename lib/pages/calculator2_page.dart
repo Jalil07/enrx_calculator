@@ -17,7 +17,7 @@ class Calculator2Page extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _Calculator2PageState createState() => _Calculator2PageState();
+  State<Calculator2Page> createState() => _Calculator2PageState();
 }
 
 class _Calculator2PageState extends State<Calculator2Page> {
