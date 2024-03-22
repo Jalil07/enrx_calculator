@@ -32,6 +32,7 @@ class _TFFormulaPageState extends State<TFFormulaPage> {
             indicatorColor: Colors.white,
             labelColor: Colors.white,
             unselectedLabelColor: Colors.grey,
+            indicatorSize: TabBarIndicatorSize.tab,
           ),
           title: _isSearchBarHidden
               ? Container() // Set text color to white

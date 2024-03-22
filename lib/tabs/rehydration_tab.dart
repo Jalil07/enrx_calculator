@@ -13,10 +13,10 @@ import '../pages/web_page.dart';
 class RehydrationTab extends StatefulWidget {
   final String searchQuery; // Search query passed from TFFormulaPage
 
-  RehydrationTab({required this.searchQuery});
+  const RehydrationTab({super.key, required this.searchQuery});
 
   @override
-  _RehydrationTabState createState() => _RehydrationTabState();
+  State<RehydrationTab> createState() => _RehydrationTabState();
 }
 
 class _RehydrationTabState extends State<RehydrationTab> {

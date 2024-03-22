@@ -1,0 +1,40 @@
+dependencies: \
+  /Users/tafaqqh/StudioProjects/enrx_calculator/ios/build/Pods.build/Debug-iphonesimulator/webview_flutter_wkwebview.build/module.modulemap \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FLTWebViewFlutterPlugin.m \
+  /Users/tafaqqh/StudioProjects/enrx_calculator/ios/Pods/Target\ Support\ Files/webview_flutter_wkwebview/webview_flutter_wkwebview-prefix.pch \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FLTWebViewFlutterPlugin.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Modules/module.modulemap \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/Flutter.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterAppDelegate.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterMacros.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterPlugin.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterBinaryMessenger.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterChannels.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterCodecs.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterPlatformViews.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterTexture.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterCallbackCache.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterDartProject.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterEngine.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterEngineGroup.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterHeadlessDartRunner.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterPluginAppLifeCycleDelegate.h \
+  /Users/tafaqqh/Developer/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-arm64_x86_64-simulator/Flutter.framework/Headers/FlutterViewController.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFGeneratedWebKitApis.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFHTTPCookieStoreHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFInstanceManager.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFNavigationDelegateHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFObjectHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFPreferencesHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFScriptMessageHandlerHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFScrollViewDelegateHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFScrollViewHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFUIDelegateHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFWebViewConfigurationHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFUIViewHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFURLCredentialHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFDataConverters.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFURLHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFUserContentControllerHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFWebViewHostApi.h \
+  /Users/tafaqqh/.pub-cache/hosted/pub.dev/webview_flutter_wkwebview-3.13.0/ios/Classes/FWFWebsiteDataStoreHostApi.h
