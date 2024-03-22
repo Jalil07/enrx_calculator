@@ -82,7 +82,7 @@ class GuidePage extends StatelessWidget {
                 onTap: () {
                   String subject = 'EN RX Calculator: Contact Us';
                   String body = '';
-                  _launchGmail(subject, body);
+                  _launchGmail(context, subject, body);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -114,11 +114,13 @@ class GuidePage extends StatelessWidget {
   }
 
   //open gmail
-  Future<void> _launchGmail(String subject, String body) async {
+  Future<void> _launchGmail(context, String subject, String body) async {
     final Uri gmail = Uri.parse(
         'mailto:enrxcalculator2022@gmail.com?subject=$subject&body=$body');
     if (!await launchUrl(gmail, mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch Gmail');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Mail not available')),
+      );
     }
   }
 }
