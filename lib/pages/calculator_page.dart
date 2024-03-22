@@ -114,6 +114,7 @@ class _CalculatorPageState extends State<CalculatorPage>
               ),
             ),
           ),
+          const SizedBox(height: 25),
         ],
       ),
     );
