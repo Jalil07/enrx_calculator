@@ -1,10 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 
 class ImagePreviewPage extends StatelessWidget {
   final String imageUrl;
 
-  ImagePreviewPage({super.key, required this.imageUrl});
+  const ImagePreviewPage({super.key, required this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class ImagePreviewPage extends StatelessWidget {
       ),
       body: Center(
         child: PhotoView(
-          imageProvider: NetworkImage(imageUrl), // Use NetworkImage for external URLs
+          imageProvider: CachedNetworkImageProvider(imageUrl), // Use CachedNetworkImageProvider
         ),
       ),
     );
