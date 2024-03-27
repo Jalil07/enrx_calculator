@@ -12,6 +12,7 @@ class ImagePreviewPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
+        iconTheme: const IconThemeData(color: Colors.white),
         // actions: [
         //   Padding(
         //     padding: const EdgeInsets.only(right: 15),
