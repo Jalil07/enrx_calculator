@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.1+11
 
 environment:
-  sdk: '>=3.0.6 <4.0.0'
+  sdk: ^3.9.2
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -38,7 +38,7 @@ dependencies:
   url_launcher:
   http:
   webview_flutter:
-  connectivity:
+  connectivity_plus: ^6.0.5
   shared_preferences:
   fluttertoast:
   photo_view:

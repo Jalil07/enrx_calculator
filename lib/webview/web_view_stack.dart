@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class WebViewStack extends StatefulWidget {
   const WebViewStack({required this.controller, Key? key})
@@ -46,7 +46,7 @@ class _WebViewStackState extends State<WebViewStack> {
   Future<void> _checkInternetConnectivity() async {
     final connectivityResult = await Connectivity().checkConnectivity();
     setState(() {
-      isConnectedToInternet = connectivityResult != ConnectivityResult.none;
+      isConnectedToInternet = !connectivityResult.contains(ConnectivityResult.none) && connectivityResult.isNotEmpty;
     });
   }
 

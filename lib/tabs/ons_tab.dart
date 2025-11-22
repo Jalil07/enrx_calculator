@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -377,7 +377,7 @@ class _ONSTabState extends State<ONSTab> {
       } else {
         // Check internet connection first
         final connectivityResult = await Connectivity().checkConnectivity();
-        if (connectivityResult == ConnectivityResult.none) {
+        if (connectivityResult.contains(ConnectivityResult.none) || connectivityResult.isEmpty) {
           // No internet connection, show a Snack bar and exit early
           _showNoInternetSnackbar(); // Note: No need to await here since we're just showing a snackbar
           return []; // Return an empty list or handle accordingly
@@ -483,7 +483,7 @@ class _ONSTabState extends State<ONSTab> {
       backgroundColor: Colors.purple,
       onPressed: () async {
         final connectivityResult = await Connectivity().checkConnectivity();
-        if (connectivityResult == ConnectivityResult.none) {
+        if (connectivityResult.contains(ConnectivityResult.none) || connectivityResult.isEmpty) {
           // No internet connection, show a Snackbar
           await _showNoInternetSnackbar();
           return; // Don't proceed with the action

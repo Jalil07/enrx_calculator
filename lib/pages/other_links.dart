@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import '../pages/web_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -228,7 +228,7 @@ class _OtherLinksPageState extends State<OtherLinksPage> {
       backgroundColor: Colors.purple,
       onPressed: () async {
         final connectivityResult = await Connectivity().checkConnectivity();
-        if (connectivityResult == ConnectivityResult.none) {
+        if (connectivityResult.contains(ConnectivityResult.none) || connectivityResult.isEmpty) {
           // No internet connection, show a Snack bar
           await _showNoInternetSnackbar();
           return; // Don't proceed with the action
@@ -254,7 +254,7 @@ class _OtherLinksPageState extends State<OtherLinksPage> {
       } else {
         // Check internet connection first
         final connectivityResult = await Connectivity().checkConnectivity();
-        if (connectivityResult == ConnectivityResult.none) {
+        if (connectivityResult.contains(ConnectivityResult.none) || connectivityResult.isEmpty) {
           // No internet connection, show a Snack bar and exit early
           _showNoInternetSnackbar(); // Note: No need to await here since we're just showing a snackbar
           return []; // Return an empty list or handle accordingly
