@@ -354,7 +354,7 @@ class _MicronutrientsTabState extends State<MicronutrientsTab> {
 
   FloatingActionButton _fab() {
     return FloatingActionButton(
-      backgroundColor: Colors.purple,
+      backgroundColor: const Color(0xFF422546),
       onPressed: () async {
         final connectivityResult = await Connectivity().checkConnectivity();
         if (connectivityResult.contains(ConnectivityResult.none) || connectivityResult.isEmpty) {

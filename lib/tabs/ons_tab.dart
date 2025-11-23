@@ -43,9 +43,7 @@ class _ONSTabState extends State<ONSTab> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CircularProgressIndicator(),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  SizedBox(height: 20),
                   Text('Please wait retrieving data'),
                 ],
               ),
@@ -57,21 +55,18 @@ class _ONSTabState extends State<ONSTab> {
           );
         } else if (snapshot.hasData) {
           final List<Map<String, dynamic>> data = snapshot.data!;
-          return Scaffold(
-            body: _body(data),
-            floatingActionButton: _fab(),
-          );
+          return Scaffold(body: _body(data), floatingActionButton: _fab());
         } else {
-          return const Center(
-            child: Text('No data available.'),
-          );
+          return const Center(child: Text('No data available.'));
         }
       },
     );
   }
 
   ListView _body(List<Map<String, dynamic>> data) {
-    List<Map<String, dynamic>> filteredData = _filterData(data); // Filter the data
+    List<Map<String, dynamic>> filteredData = _filterData(
+      data,
+    ); // Filter the data
 
     return ListView.builder(
       itemCount: filteredData.length,
@@ -118,12 +113,14 @@ class _ONSTabState extends State<ONSTab> {
               "Vitamin C (mg)",
               "Arginine (mg)",
               "Glutamine (mg)",
-              "BCAA (g)"
+              "BCAA (g)",
             ];
             int toMapPosition = 0;
-            for (int _repeat21 = 0;
-            _repeat21 < listString.length;
-            _repeat21++) {
+            for (
+              int _repeat21 = 0;
+              _repeat21 < listString.length;
+              _repeat21++
+            ) {
               Map<String, String> mapfilter = {};
               mapfilter["scoops"] = item[listString[toMapPosition]].toString();
               mapfilter["calorie"] =
@@ -142,7 +139,8 @@ class _ONSTabState extends State<ONSTab> {
               context,
               MaterialPageRoute(
                 builder: (context) => CalculatorPage(
-                  contentJson: contentJson, product: item["Product"],
+                  contentJson: contentJson,
+                  product: item["Product"],
                 ),
               ),
             );
@@ -160,7 +158,8 @@ class _ONSTabState extends State<ONSTab> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      if (item['Product Image'] != null && item['Product Image'].isNotEmpty) {
+                      if (item['Product Image'] != null &&
+                          item['Product Image'].isNotEmpty) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -171,9 +170,7 @@ class _ONSTabState extends State<ONSTab> {
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('No image available'),
-                          ),
+                          const SnackBar(content: Text('No image available')),
                         );
                       }
                     },
@@ -184,9 +181,10 @@ class _ONSTabState extends State<ONSTab> {
                       width: 55,
                       placeholder: (context, url) => const Center(
                         child: SizedBox(
-                            height: 35,
-                            width: 35,
-                            child: CircularProgressIndicator()),
+                          height: 35,
+                          width: 35,
+                          child: CircularProgressIndicator(),
+                        ),
                       ),
                       errorWidget: (context, url, error) => const Icon(
                         Icons.image_not_supported_outlined,
@@ -199,7 +197,9 @@ class _ONSTabState extends State<ONSTab> {
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 20, horizontal: 10),
+                        vertical: 20,
+                        horizontal: 10,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -227,7 +227,9 @@ class _ONSTabState extends State<ONSTab> {
                                       builder: (BuildContext context) {
                                         return AlertDialog(
                                           title: const Text('Product Info'),
-                                          content: const Text('This product is certified vegetarian-safe.'),
+                                          content: const Text(
+                                            'This product is certified vegetarian-safe.',
+                                          ),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
@@ -240,7 +242,11 @@ class _ONSTabState extends State<ONSTab> {
                                       },
                                     );
                                   },
-                                  child: Image.asset('assets/images/vegan.png', height: 15, width: 15),
+                                  child: Image.asset(
+                                    'assets/images/vegan.png',
+                                    height: 15,
+                                    width: 15,
+                                  ),
                                 ),
                               const SizedBox(width: 8),
                               if (item['Halal'] == 'Halal')
@@ -251,7 +257,9 @@ class _ONSTabState extends State<ONSTab> {
                                       builder: (BuildContext context) {
                                         return AlertDialog(
                                           title: const Text('Product Info'),
-                                          content: const Text('This product is Halal certified.'),
+                                          content: const Text(
+                                            'This product is Halal certified.',
+                                          ),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
@@ -264,23 +272,29 @@ class _ONSTabState extends State<ONSTab> {
                                       },
                                     );
                                   },
-                                  child: Image.asset('assets/images/halal.png', height: 15, width: 15),
+                                  child: Image.asset(
+                                    'assets/images/halal.png',
+                                    height: 15,
+                                    width: 15,
+                                  ),
                                 ),
                             ],
                           ),
                           Text(
                             item['Formula'],
                             style: const TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                            ),
                           ),
                           Text(
                             item['Info'],
                             style: const TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w500,
-                                fontSize: 13),
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500,
+                              fontSize: 13,
+                            ),
                           ),
                         ],
                       ),
@@ -296,12 +310,14 @@ class _ONSTabState extends State<ONSTab> {
                           flex: 1,
                           child: GestureDetector(
                             onTap: () {
-                              if (item['Store1'] != null && item['Store1'].isNotEmpty) {
+                              if (item['Store1'] != null &&
+                                  item['Store1'].isNotEmpty) {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => WebPage(
-                                      linkUrl: item['Store1'], title: 'Request Order',
+                                      linkUrl: item['Store1'],
+                                      title: 'Request Order',
                                     ),
                                   ),
                                 );
@@ -316,7 +332,10 @@ class _ONSTabState extends State<ONSTab> {
                             child: Container(
                               width: double.infinity,
                               color: const Color(0xFFF89F5B),
-                              child: const Icon(Icons.shopping_cart, color: Colors.white),
+                              child: const Icon(
+                                Icons.shopping_cart,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -332,7 +351,10 @@ class _ONSTabState extends State<ONSTab> {
                             child: Container(
                               width: double.infinity,
                               color: Colors.deepOrangeAccent,
-                              child: const Icon(Icons.feedback, color: Colors.white),
+                              child: const Icon(
+                                Icons.feedback,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
@@ -377,7 +399,8 @@ class _ONSTabState extends State<ONSTab> {
       } else {
         // Check internet connection first
         final connectivityResult = await Connectivity().checkConnectivity();
-        if (connectivityResult.contains(ConnectivityResult.none) || connectivityResult.isEmpty) {
+        if (connectivityResult.contains(ConnectivityResult.none) ||
+            connectivityResult.isEmpty) {
           // No internet connection, show a Snack bar and exit early
           _showNoInternetSnackbar(); // Note: No need to await here since we're just showing a snackbar
           return []; // Return an empty list or handle accordingly
@@ -408,11 +431,9 @@ class _ONSTabState extends State<ONSTab> {
   }
 
   Future<void> _showNoInternetSnackbar() async {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('No internet connection!'),
-      ),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('No internet connection!')));
   }
 
   Future<void> _refreshData() async {
@@ -435,16 +456,18 @@ class _ONSTabState extends State<ONSTab> {
           title: const Text(
             'Confirmation',
             style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600),
+              color: Colors.black,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w600,
+            ),
           ),
           content: const Text(
             'Refreshing data will take time. Continue?',
             style: TextStyle(
-                color: Colors.black,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w500),
+              color: Colors.black,
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.w500,
+            ),
           ),
           actions: [
             TextButton(
@@ -454,9 +477,10 @@ class _ONSTabState extends State<ONSTab> {
               child: const Text(
                 'Cancel',
                 style: TextStyle(
-                    color: Colors.black54,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600),
+                  color: Colors.black54,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
             TextButton(
@@ -467,9 +491,10 @@ class _ONSTabState extends State<ONSTab> {
               child: const Text(
                 'Continue',
                 style: TextStyle(
-                    color: Colors.black,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600),
+                  color: Colors.black,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ),
           ],
@@ -480,10 +505,11 @@ class _ONSTabState extends State<ONSTab> {
 
   FloatingActionButton _fab() {
     return FloatingActionButton(
-      backgroundColor: Colors.purple,
+      backgroundColor: const Color(0xFF422546),
       onPressed: () async {
         final connectivityResult = await Connectivity().checkConnectivity();
-        if (connectivityResult.contains(ConnectivityResult.none) || connectivityResult.isEmpty) {
+        if (connectivityResult.contains(ConnectivityResult.none) ||
+            connectivityResult.isEmpty) {
           // No internet connection, show a Snackbar
           await _showNoInternetSnackbar();
           return; // Don't proceed with the action
@@ -491,14 +517,15 @@ class _ONSTabState extends State<ONSTab> {
 
         showRefreshDialog();
       },
-      child: const Icon(Icons.refresh, color: Colors.white,),
+      child: const Icon(Icons.refresh, color: Colors.white),
     );
   }
 
   //open gmail
   Future<void> _launchGmail(String subject, String body) async {
     final Uri gmail = Uri.parse(
-        'mailto:enrxcalculator2022@gmail.com?subject=$subject&body=$body');
+      'mailto:enrxcalculator2022@gmail.com?subject=$subject&body=$body',
+    );
     if (!await launchUrl(gmail, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch Gmail');
     }

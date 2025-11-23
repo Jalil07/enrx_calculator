@@ -2,6 +2,7 @@ import 'package:enrx_calculator/pages/company_links.dart';
 import 'package:enrx_calculator/pages/micronutrients_page.dart';
 import 'package:enrx_calculator/pages/ons_page.dart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'about_app.dart';
 import 'guide_page.dart';
 import 'other_links.dart';
@@ -22,12 +23,24 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF1CD88),
-      body: Stack(
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF1CD88),
+        body: Stack(
           children: [
             Stack(
               children: [
+                Opacity(
+                  opacity: 0.5,
+                  child: ClipPath(
+                    clipper: WaveClipper(),
+                    child: Container(
+                      color: const Color(0xFF422546),
+                      height: 160,
+                    ),
+                  ),
+                ),
                 ClipPath(
                   clipper: WaveClipper(),
                   child: Container(
@@ -59,16 +72,6 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Opacity(
-                  opacity: 0.5,
-                  child: ClipPath(
-                    clipper: WaveClipper(),
-                    child: Container(
-                      color: const Color(0xFF422546),
-                      height: 160,
-                    ),
-                  ),
-                ),
               ],
             ),
             Center(
@@ -91,6 +94,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ]
+      ),
       ),
     );
   }
